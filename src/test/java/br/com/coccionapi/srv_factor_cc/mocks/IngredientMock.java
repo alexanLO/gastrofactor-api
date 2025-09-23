@@ -16,6 +16,7 @@ public class IngredientMock {
     public final BigDecimal netWeight = BigDecimal.valueOf(800.00);
     public final BigDecimal weightRaw = BigDecimal.valueOf(800.00);
     public final BigDecimal weightCooked = BigDecimal.valueOf(700.50);
+    public final LocalDateTime registrationDate = LocalDateTime.now();
 
     public IngredientRequest createIngredientRequestFaker() {
         return IngredientRequest.builder()
@@ -34,7 +35,7 @@ public class IngredientMock {
                 .netWeight(netWeight)
                 .rawWeight(weightRaw)
                 .cookedWeight(weightCooked)
-                .registrationDate(LocalDateTime.now())
+                .registrationDate(registrationDate)
                 .build();
     }
 
@@ -46,6 +47,6 @@ public class IngredientMock {
                 netWeight,
                 grossWeight,
                 weightCooked,
-                LocalDateTime.now());
+                registrationDate);
     }
 }

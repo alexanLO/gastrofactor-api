@@ -35,7 +35,7 @@ import br.com.coccionapi.srv_factor_cc.port.input.IngredientUseCase;
 @DisplayName("Valida as funcionalidades da camada controller")
 public class IngredientControllerTest extends IngredientMock {
 
-    private final String URL_BASE = "/v1/ingredient";
+    private static final String URL_BASE = "/v1/ingredient";
 
     @Mock
     private IngredientUseCase ingredientUseCase;
