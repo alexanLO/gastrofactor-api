@@ -3,7 +3,8 @@ name: Prod Build and Validate
 on:
   push:
     branches:
-      - main
+      - prod
+      - 'prod/**'
 
 jobs:
   build-prod:
