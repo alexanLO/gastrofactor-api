@@ -1,0 +1,32 @@
+name: Prod Build and Validate
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-prod:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+
+      - name: Build with Maven
+        run: mvn clean install
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v2
+        with:
+          projectKey: alexan-lima_srv-factor-cocao
+          organization: alexan-lima
+          token: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Snyk Security Scan
+        uses: snyk/actions/maven@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
