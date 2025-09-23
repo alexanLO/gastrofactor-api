@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - prod
-      - 'prod/**'
+      - "prod/**"
 
 jobs:
   build-prod:
@@ -15,8 +15,8 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          java-version: '21'
-          distribution: 'temurin'
+          java-version: "21"
+          distribution: "temurin"
 
       - name: Build with Maven
         run: mvn clean install
@@ -24,11 +24,29 @@ jobs:
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v2
         with:
-          projectKey: alexan-lima_srv-factor-cocao
-          organization: alexan-lima
-          token: ${{ secrets.SONAR_TOKEN }}
+          args: >
+            -Dsonar.projectKey=alexan-lima_srv-factor-cocao
+            -Dsonar.organization=alexan-lima
+            -Dsonar.host.url=https://sonarcloud.io
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
       - name: Snyk Security Scan
         uses: snyk/actions/maven@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      - name: Verificar incremento de versão no pom.xml
+        run: |
+          git fetch origin develop
+          OLD_VERSION=$(git show origin/develop:pom.xml | grep '<version>' | head -1 | sed 's/[^0-9.]//g')
+          NEW_VERSION=$(grep '<version>' pom.xml | head -1 | sed 's/[^0-9.]//g')
+
+          echo "Versão antiga: $OLD_VERSION"
+          echo "Versão nova: $NEW_VERSION"
+
+          if [ "$OLD_VERSION" = "$NEW_VERSION" ]; then
+            echo "❌ Versão do pom.xml não foi incrementada em relação à develop!"
+            exit 1
+          else
+            echo "✅ Versão incrementada corretamente."
+          fi
