@@ -28,7 +28,7 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.projectKey=alexanlo
+            -Dsonar.projectKey=alexanlo_srv-factor-cc
             -Dsonar.organization=alexan-lima
             -Dsonar.host.url=https://sonarcloud.io
 
