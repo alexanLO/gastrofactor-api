@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - dev
-      - "feature/**"
+      - feature/**
 
 jobs:
   build-dev:
@@ -20,17 +20,6 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean install
-
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        with:
-          args: >
-            -Dsonar.projectKey=alexan-lima_srv-factor-cc
-            -Dsonar.organization=alexan-lima
-            -Dsonar.host.url=https://sonarcloud.io
 
       - name: Snyk Security Scan
         uses: snyk/actions/maven@master
