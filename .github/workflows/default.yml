@@ -8,31 +8,45 @@ on:
       - "feature/**"
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   build-dev:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
 
-      - name: Set up JDK
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Configurar JDK
         uses: actions/setup-java@v3
         with:
           java-version: "21"
           distribution: "temurin"
 
-      - name: Build with Maven
+      - name: Exportar JAVA_HOME
+        run: echo "JAVA_HOME=$JAVA_HOME" >> $GITHUB_ENV
+
+      - name: Compilar com Maven
         run: mvn clean install
+
+      - name: Verificar Maven Wrapper
+        run: |
+          if [ ! -f "./mvnw" ]; then
+            mvn -N io.takari:maven:wrapper
+          fi
 
       - name: Snyk Security Scan
         uses: snyk/actions/maven@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: test --all-projects
 
       - name: Verificar incremento de versão no pom.xml
         run: |
           git fetch origin develop
-          OLD_VERSION=$(git show origin/develop:pom.xml | grep '<version>' | head -1 | sed 's/[^0-9.]//g')
-          NEW_VERSION=$(grep '<version>' pom.xml | head -1 | sed 's/[^0-9.]//g')
+          OLD_VERSION=$(git show origin/develop:pom.xml | grep -m1 '<version>' | sed 's/[^0-9.]//g')
+          NEW_VERSION=$(grep -m1 '<version>' pom.xml | sed 's/[^0-9.]//g')
 
           echo "Versão antiga: $OLD_VERSION"
           echo "Versão nova: $NEW_VERSION"
