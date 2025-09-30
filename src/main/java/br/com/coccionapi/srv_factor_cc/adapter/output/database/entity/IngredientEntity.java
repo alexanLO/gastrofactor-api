@@ -25,8 +25,7 @@ public class IngredientEntity {
 
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id = null;
+    private UUID id = UUID.randomUUID();
 
     @Column(name = "name", nullable = false)
     private String name = "";
