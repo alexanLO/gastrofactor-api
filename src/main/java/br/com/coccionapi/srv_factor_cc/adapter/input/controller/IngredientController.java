@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.coccionapi.srv_factor_cc.adapter.input.dto.requests.IngredientRequest;
+import br.com.coccionapi.srv_factor_cc.adapter.input.dto.responses.CookingFactorResponse;
 import br.com.coccionapi.srv_factor_cc.adapter.input.dto.responses.CorrectionFactorResponse;
 import br.com.coccionapi.srv_factor_cc.adapter.input.dto.responses.IngredientResponse;
 import br.com.coccionapi.srv_factor_cc.adapter.input.mapper.IngredientMapper;
+import br.com.coccionapi.srv_factor_cc.port.input.CookingFactorUseCase;
 import br.com.coccionapi.srv_factor_cc.port.input.CorrectionFactorUseCase;
 import br.com.coccionapi.srv_factor_cc.port.input.IngredientUseCase;
 import jakarta.validation.Valid;
@@ -29,6 +31,7 @@ public class IngredientController {
 
     private final IngredientUseCase ingredientUseCase;
     private final CorrectionFactorUseCase correctionFactorUseCase;
+    private final CookingFactorUseCase cookingFactorUseCase;
 
     private final IngredientMapper mapper;
 
@@ -41,10 +44,18 @@ public class IngredientController {
 
     @GetMapping("/{id}/correction-factor")
     public ResponseEntity<CorrectionFactorResponse> calculateCorrectionFactor(@PathVariable UUID id) {
-        log.info("Buscando o calcular do fator de correção do id: {}", id);
+        log.info("Buscando o calculo do fator de correção do id: {}", id);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(mapper.toCorrectionFactorResponse(correctionFactorUseCase.calculateCorrectionFactor(id)));
+    }
+
+    @GetMapping("/{id}/cooking-factor")
+    public ResponseEntity<CookingFactorResponse> calculateCookingFactor(@PathVariable UUID id) {
+        log.info("Buscando o calculo do fator de cocção do id: {}", id);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(mapper.toCookingFactorResponse(cookingFactorUseCase.calculateCookingFactor(id)));
     }
 
 }

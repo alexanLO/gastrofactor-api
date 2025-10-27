@@ -8,8 +8,10 @@ import org.mapstruct.MappingConstants;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.ReportingPolicy;
 
+import br.com.coccionapi.srv_factor_cc.adapter.output.database.entity.CookingFactorEntity;
 import br.com.coccionapi.srv_factor_cc.adapter.output.database.entity.CorrectionFactorEntity;
 import br.com.coccionapi.srv_factor_cc.adapter.output.database.entity.IngredientEntity;
+import br.com.coccionapi.srv_factor_cc.domain.model.CookingFactor;
 import br.com.coccionapi.srv_factor_cc.domain.model.CorrectionFactor;
 import br.com.coccionapi.srv_factor_cc.domain.model.Ingredient;
 
@@ -40,7 +42,7 @@ public interface EntityMapper {
     @Mapping(target = "netWgh", source = "netWeight")
     @Mapping(target = "ctFactor", source = "correctionFactor")
     @Mapping(target = "calcdAt", source = "calculatedAt")
-    CorrectionFactorEntity toSaveFCEntity(CorrectionFactor request);
+    CorrectionFactorEntity toSaveCorrectionFactorEntity(CorrectionFactor request);
 
     @Mapping(target = "id", source = "id")
     @Mapping(target = "ingredientId", source = "ingId.id")
@@ -48,5 +50,21 @@ public interface EntityMapper {
     @Mapping(target = "netWeight", source = "netWgh")
     @Mapping(target = "correctionFactor", source = "ctFactor")
     @Mapping(target = "calculatedAt", source = "calcdAt")
-    CorrectionFactor toModelFC(CorrectionFactorEntity save);
+    CorrectionFactor toModelCorrectionFactor(CorrectionFactorEntity save);
+
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "ingId.id", source = "ingredientId")
+    @Mapping(target = "rawWgh", source = "rawWeight")
+    @Mapping(target = "cookedWgt", source = "cookedWeight")
+    @Mapping(target = "ccFactor", source = "cookingFactor")
+    @Mapping(target = "calcdAt", source = "calculatedAt")
+    CookingFactorEntity toSaveCookingFactorEntity(CookingFactor request);
+
+    @Mapping(target = "id", source = "id")
+    @Mapping(target = "ingredientId", source = "ingId.id")
+    @Mapping(target = "cookedWeight", source = "cookedWgt")
+    @Mapping(target = "rawWeight", source = "rawWgh")
+    @Mapping(target = "cookingFactor", source = "ccFactor")
+    @Mapping(target = "calculatedAt", source = "calcdAt")
+    CookingFactor toModelCookingFactor(CookingFactorEntity save);
 }

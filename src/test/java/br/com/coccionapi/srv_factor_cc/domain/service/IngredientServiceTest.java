@@ -7,8 +7,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.UUID;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,10 +14,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import br.com.coccionapi.srv_factor_cc.domain.model.CookingFactor;
 import br.com.coccionapi.srv_factor_cc.domain.model.CorrectionFactor;
 import br.com.coccionapi.srv_factor_cc.domain.model.Ingredient;
 import br.com.coccionapi.srv_factor_cc.mocks.IngredientMock;
 import br.com.coccionapi.srv_factor_cc.port.output.ConsultIngredientPort;
+import br.com.coccionapi.srv_factor_cc.port.output.CookingFactorPort;
 import br.com.coccionapi.srv_factor_cc.port.output.CorrectionFactorPort;
 import br.com.coccionapi.srv_factor_cc.port.output.IngredientPort;
 
@@ -35,6 +35,9 @@ public class IngredientServiceTest extends IngredientMock {
 
     @Mock
     private ConsultIngredientPort consultIngredientPort;
+
+    @Mock
+    private CookingFactorPort cookingFactorPort;
 
     @InjectMocks
     private IngredientService service;
@@ -59,11 +62,26 @@ public class IngredientServiceTest extends IngredientMock {
         var request = createCorrectionFactorFaker();
 
         when(consultIngredientPort.searchingById(ID)).thenReturn(createIngredientFaker());
-        when(correctionFactorPort.registerCF(any(CorrectionFactor.class))).thenReturn(request);
+        when(correctionFactorPort.registerCorrectionFactor(any(CorrectionFactor.class))).thenReturn(request);
 
         var response = service.calculateCorrectionFactor(ID);
 
-        verify(correctionFactorPort, times(1)).registerCF(any(CorrectionFactor.class));
+        verify(correctionFactorPort, times(1)).registerCorrectionFactor(any(CorrectionFactor.class));
+        assertEquals(request, response);
+    }
+
+    @Test
+    @DisplayName("Deve registrar o calculo do fator de cocção com sucesso")
+    void mustCalculateCookingFactor() {
+
+        var request = createCookingFactorFaker();
+
+        when(consultIngredientPort.searchingById(ID)).thenReturn(createIngredientFaker());
+        when(cookingFactorPort.registerCookingFactor(any(CookingFactor.class))).thenReturn(request);
+
+        var response = service.calculateCookingFactor(ID);
+
+        verify(cookingFactorPort, times(1)).registerCookingFactor(any(CookingFactor.class));
         assertEquals(request, response);
     }
 }
