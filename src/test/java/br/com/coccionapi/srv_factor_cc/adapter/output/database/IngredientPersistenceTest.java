@@ -57,9 +57,9 @@ public class IngredientPersistenceTest extends IngredientMock {
         var result = createCorrectionFactorEntityFaker();
 
         when(repositoryCF.save(result)).thenReturn(result);
-        when(mapper.toSaveFCEntity(expected)).thenReturn(result);
+        when(mapper.toSaveCorrectionFactorEntity(expected)).thenReturn(result);
 
-        persistence.registerCF(expected);
+        persistence.registerCorrectionFactor(expected);
 
         verify(repositoryCF, times(1)).save(result);
         assertEquals(expected.getId(), result.getId());

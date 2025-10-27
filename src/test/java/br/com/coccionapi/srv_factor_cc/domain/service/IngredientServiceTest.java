@@ -7,8 +7,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.UUID;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -59,11 +57,11 @@ public class IngredientServiceTest extends IngredientMock {
         var request = createCorrectionFactorFaker();
 
         when(consultIngredientPort.searchingById(ID)).thenReturn(createIngredientFaker());
-        when(correctionFactorPort.registerCF(any(CorrectionFactor.class))).thenReturn(request);
+        when(correctionFactorPort.registerCorrectionFactor(any(CorrectionFactor.class))).thenReturn(request);
 
         var response = service.calculateCorrectionFactor(ID);
 
-        verify(correctionFactorPort, times(1)).registerCF(any(CorrectionFactor.class));
+        verify(correctionFactorPort, times(1)).registerCorrectionFactor(any(CorrectionFactor.class));
         assertEquals(request, response);
     }
 }

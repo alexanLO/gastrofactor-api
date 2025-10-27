@@ -8,8 +8,10 @@ import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.ReportingPolicy;
 
 import br.com.coccionapi.srv_factor_cc.adapter.input.dto.requests.IngredientRequest;
+import br.com.coccionapi.srv_factor_cc.adapter.input.dto.responses.CookingFactorResponse;
 import br.com.coccionapi.srv_factor_cc.adapter.input.dto.responses.CorrectionFactorResponse;
 import br.com.coccionapi.srv_factor_cc.adapter.input.dto.responses.IngredientResponse;
+import br.com.coccionapi.srv_factor_cc.domain.model.CookingFactor;
 import br.com.coccionapi.srv_factor_cc.domain.model.CorrectionFactor;
 import br.com.coccionapi.srv_factor_cc.domain.model.Ingredient;
 
@@ -21,5 +23,7 @@ public interface IngredientMapper {
     IngredientResponse toDTOResponse(Ingredient response);
 
     CorrectionFactorResponse toCorrectionFactorResponse(CorrectionFactor calculateCorrectionFactor);
+
+    CookingFactorResponse toCookingFactorResponse(CookingFactor calculateCorrectionFactor);
 
 }
