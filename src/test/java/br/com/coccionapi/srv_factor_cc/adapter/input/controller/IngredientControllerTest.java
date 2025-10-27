@@ -30,9 +30,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.coccionapi.srv_factor_cc.adapter.input.dto.requests.IngredientRequest;
 import br.com.coccionapi.srv_factor_cc.adapter.input.mapper.IngredientMapper;
+import br.com.coccionapi.srv_factor_cc.domain.model.CookingFactor;
 import br.com.coccionapi.srv_factor_cc.domain.model.CorrectionFactor;
 import br.com.coccionapi.srv_factor_cc.domain.model.Ingredient;
 import br.com.coccionapi.srv_factor_cc.mocks.IngredientMock;
+import br.com.coccionapi.srv_factor_cc.port.input.CookingFactorUseCase;
 import br.com.coccionapi.srv_factor_cc.port.input.CorrectionFactorUseCase;
 import br.com.coccionapi.srv_factor_cc.port.input.IngredientUseCase;
 
@@ -40,75 +42,98 @@ import br.com.coccionapi.srv_factor_cc.port.input.IngredientUseCase;
 @DisplayName("Valida as funcionalidades da camada controller")
 public class IngredientControllerTest extends IngredientMock {
 
-    private static final String URL_BASE = "/v1/ingredient";
-    private static final String URL_FATOR_CORRECAO = URL_BASE + "/{id}/correction-factor";
+        private static final String URL_BASE = "/v1/ingredient";
+        private static final String URL_FACTOR_CORRECTION = URL_BASE + "/{id}/correction-factor";
+        private static final String URL_FACTOR_COOKING = URL_BASE + "/{id}/cooking-factor";
 
-    @Mock
-    private IngredientUseCase ingredientUseCase;
+        @Mock
+        private IngredientUseCase ingredientUseCase;
 
-    @Mock
-    private CorrectionFactorUseCase correctionFactorUseCase;
+        @Mock
+        private CorrectionFactorUseCase correctionFactorUseCase;
 
-    @Mock
-    private IngredientMapper mapper;
+        @Mock
+        private CookingFactorUseCase cookingFactorUseCase;
 
-    @InjectMocks
-    private IngredientController controller;
+        @Mock
+        private IngredientMapper mapper;
 
-    private MockMvc mockMvc;
+        @InjectMocks
+        private IngredientController controller;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+        private MockMvc mockMvc;
 
-    @BeforeEach
-    void setup() {
+        private ObjectMapper objectMapper = new ObjectMapper();
 
-        ingredientUseCase = mock(IngredientUseCase.class);
-        correctionFactorUseCase = mock(CorrectionFactorUseCase.class);
-        mapper = mock(IngredientMapper.class);
-        
-        controller = new IngredientController(ingredientUseCase, correctionFactorUseCase, mapper);
-        
-        objectMapper.findAndRegisterModules();
+        @BeforeEach
+        void setup() {
 
-        mockMvc = MockMvcBuilders.standaloneSetup(controller)
-                // .setControllerAdvice(BusinessExceptionHandler.class)
-                .defaultResponseCharacterEncoding(StandardCharsets.UTF_8)
-                .build();
-    }
+                ingredientUseCase = mock(IngredientUseCase.class);
+                correctionFactorUseCase = mock(CorrectionFactorUseCase.class);
+                cookingFactorUseCase = mock(CookingFactorUseCase.class);
+                mapper = mock(IngredientMapper.class);
 
-    @Test
-    @DisplayName("POST - cria igrediente → retorna 201.")
-    void mustRegister() throws Exception {
+                controller = new IngredientController(ingredientUseCase, correctionFactorUseCase, cookingFactorUseCase,
+                                mapper);
 
-        var request = createIngredientFaker();
+                objectMapper.findAndRegisterModules();
 
-        when(ingredientUseCase.register(any(Ingredient.class))).thenReturn(createIngredientFaker());
-        when(mapper.toModelRequest(any(IngredientRequest.class))).thenReturn(request);
+                mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                                // .setControllerAdvice(BusinessExceptionHandler.class)
+                                .defaultResponseCharacterEncoding(StandardCharsets.UTF_8)
+                                .build();
+        }
 
-        mockMvc.perform(post(URL_BASE)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isCreated());
+        @Test
+        @DisplayName("POST - cria igrediente → retorna 201.")
+        void mustRegister() throws Exception {
 
-        ArgumentCaptor<Ingredient> captor = ArgumentCaptor.forClass(Ingredient.class);
-        verify(ingredientUseCase, times(1)).register(captor.capture());
-        assertEquals(request, captor.getValue());
-    }
+                var request = createIngredientFaker();
 
-    @Test
-    @DisplayName("GET - calcular o fator de correcao → retorna 200.")
-    void mustCalculateCorrectionFactor() throws Exception {
+                when(ingredientUseCase.register(any(Ingredient.class))).thenReturn(createIngredientFaker());
+                when(mapper.toModelRequest(any(IngredientRequest.class))).thenReturn(request);
 
-        var expectedJson = createCorrectionFactorFaker();
+                mockMvc.perform(post(URL_BASE)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(request)))
+                                .andExpect(status().isCreated());
 
-        when(mapper.toCorrectionFactorResponse(any(CorrectionFactor.class)))
-                .thenReturn(createCorrectionFactorResponseFaker());
-        when(correctionFactorUseCase.calculateCorrectionFactor(any(UUID.class)))
-                .thenReturn(createCorrectionFactorFaker());
+                ArgumentCaptor<Ingredient> captor = ArgumentCaptor.forClass(Ingredient.class);
+                verify(ingredientUseCase, times(1)).register(captor.capture());
+                assertEquals(request, captor.getValue());
+        }
 
-        mockMvc.perform(get(URL_FATOR_CORRECAO, ID)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(expectedJson)));
-    }
+        @Test
+        @DisplayName("GET - calcular o fator de correcao → retorna 200.")
+        void mustCalculateCorrectionFactor() throws Exception {
+
+                var response = createCorrectionFactorFaker();
+
+                when(mapper.toCorrectionFactorResponse(any(CorrectionFactor.class)))
+                                .thenReturn(createCorrectionFactorResponseFaker());
+                when(correctionFactorUseCase.calculateCorrectionFactor(any(UUID.class)))
+                                .thenReturn(response);
+
+                mockMvc.perform(get(URL_FACTOR_CORRECTION, ID)
+                                .contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+        }
+
+        @Test
+        @DisplayName("GET - calcular o fator de cocção → retorna 200.")
+        void mustCalculateCookingFactor() throws Exception {
+
+                var response = createCookingFactorFaker();
+
+                when(mapper.toCookingFactorResponse(any(CookingFactor.class)))
+                                .thenReturn(createCookingFactorResponseFaker());
+                when(cookingFactorUseCase.calculateCookingFactor(any(UUID.class)))
+                                .thenReturn(response);
+
+                mockMvc.perform(get(URL_FACTOR_COOKING, ID)
+                                .contentType(MediaType.APPLICATION_JSON))
+                                .andExpect(status().isOk())
+                                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+        }
 }
