@@ -39,7 +39,7 @@ public class IngredientController {
                 .body(mapper.toDTOResponse(ingredientUseCase.register(mapper.toModelRequest(request))));
     }
 
-    @GetMapping("/{id}/fator-correcao")
+    @GetMapping("/{id}/correction-factor")
     public ResponseEntity<CorrectionFactorResponse> calculateCorrectionFactor(@PathVariable UUID id) {
         log.info("Buscando o calcular do fator de correção do id: {}", id);
 

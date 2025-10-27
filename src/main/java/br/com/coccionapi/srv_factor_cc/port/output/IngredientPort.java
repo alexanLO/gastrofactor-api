@@ -4,6 +4,6 @@ import br.com.coccionapi.srv_factor_cc.domain.model.Ingredient;
 
 public interface IngredientPort {
 
-    Ingredient register(Ingredient modelRequest);
+    Ingredient registerIngredient(Ingredient modelRequest);
     
 }

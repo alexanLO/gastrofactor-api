@@ -26,7 +26,7 @@ public class IngredientPersistence implements IngredientPort, ConsultIngredientP
     private final EntityMapper mapper;
 
     @Override
-    public Ingredient register(Ingredient modelRequest) {
+    public Ingredient registerIngredient(Ingredient modelRequest) {
         return mapper.toModelIngredient(ingredientRepository.save(mapper.toSaveEntity(modelRequest)));
     }
 
@@ -39,7 +39,7 @@ public class IngredientPersistence implements IngredientPort, ConsultIngredientP
 
     // * Fator de Correção Repository/Criteria */
     @Override
-    public CorrectionFactor register(CorrectionFactor request) {
+    public CorrectionFactor registerCF(CorrectionFactor request) {
         return mapper.toModelFC(cFactorRepository.save(mapper.toSaveFCEntity(request)));
     }
 }

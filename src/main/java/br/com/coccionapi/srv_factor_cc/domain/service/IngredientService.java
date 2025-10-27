@@ -27,7 +27,7 @@ public class IngredientService implements IngredientUseCase, CorrectionFactorUse
 
     @Override
     public Ingredient register(Ingredient modelRequest) {
-        return ingredientPort.register(modelRequest);
+        return ingredientPort.registerIngredient(modelRequest);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class IngredientService implements IngredientUseCase, CorrectionFactorUse
         BigDecimal resultCalcFC = ingredient.getGrossWeight().divide(ingredient.getNetWeight());
 
         // * Salva o calculo no BD para consultas futuras e retorna o resultado */
-        return correctionFactorPort.register(
+        return correctionFactorPort.registerCF(
                 CorrectionFactor.builder()
                         .ingredientId(ingredient.getId())
                         .grossWeight(ingredient.getGrossWeight())

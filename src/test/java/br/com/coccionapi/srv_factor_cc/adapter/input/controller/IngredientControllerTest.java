@@ -6,10 +6,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,8 +30,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.coccionapi.srv_factor_cc.adapter.input.dto.requests.IngredientRequest;
 import br.com.coccionapi.srv_factor_cc.adapter.input.mapper.IngredientMapper;
+import br.com.coccionapi.srv_factor_cc.domain.model.CorrectionFactor;
 import br.com.coccionapi.srv_factor_cc.domain.model.Ingredient;
 import br.com.coccionapi.srv_factor_cc.mocks.IngredientMock;
+import br.com.coccionapi.srv_factor_cc.port.input.CorrectionFactorUseCase;
 import br.com.coccionapi.srv_factor_cc.port.input.IngredientUseCase;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,9 +41,13 @@ import br.com.coccionapi.srv_factor_cc.port.input.IngredientUseCase;
 public class IngredientControllerTest extends IngredientMock {
 
     private static final String URL_BASE = "/v1/ingredient";
+    private static final String URL_FATOR_CORRECAO = URL_BASE + "/{id}/correction-factor";
 
     @Mock
     private IngredientUseCase ingredientUseCase;
+
+    @Mock
+    private CorrectionFactorUseCase correctionFactorUseCase;
 
     @Mock
     private IngredientMapper mapper;
@@ -54,10 +63,11 @@ public class IngredientControllerTest extends IngredientMock {
     void setup() {
 
         ingredientUseCase = mock(IngredientUseCase.class);
+        correctionFactorUseCase = mock(CorrectionFactorUseCase.class);
         mapper = mock(IngredientMapper.class);
-
-        controller = new IngredientController(ingredientUseCase, mapper);
-
+        
+        controller = new IngredientController(ingredientUseCase, correctionFactorUseCase, mapper);
+        
         objectMapper.findAndRegisterModules();
 
         mockMvc = MockMvcBuilders.standaloneSetup(controller)
@@ -83,5 +93,22 @@ public class IngredientControllerTest extends IngredientMock {
         ArgumentCaptor<Ingredient> captor = ArgumentCaptor.forClass(Ingredient.class);
         verify(ingredientUseCase, times(1)).register(captor.capture());
         assertEquals(request, captor.getValue());
+    }
+
+    @Test
+    @DisplayName("GET - calcular o fator de correcao → retorna 200.")
+    void mustCalculateCorrectionFactor() throws Exception {
+
+        var expectedJson = createCorrectionFactorFaker();
+
+        when(mapper.toCorrectionFactorResponse(any(CorrectionFactor.class)))
+                .thenReturn(createCorrectionFactorResponseFaker());
+        when(correctionFactorUseCase.calculateCorrectionFactor(any(UUID.class)))
+                .thenReturn(createCorrectionFactorFaker());
+
+        mockMvc.perform(get(URL_FATOR_CORRECAO, ID)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(expectedJson)));
     }
 }

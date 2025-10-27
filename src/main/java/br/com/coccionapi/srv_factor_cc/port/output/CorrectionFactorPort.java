@@ -4,6 +4,6 @@ import br.com.coccionapi.srv_factor_cc.domain.model.CorrectionFactor;
 
 public interface CorrectionFactorPort {
 
-    CorrectionFactor register(CorrectionFactor correctionFactor);
+    CorrectionFactor registerCF(CorrectionFactor correctionFactor);
     
 }
