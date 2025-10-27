@@ -1,0 +1,25 @@
+@ingredientId = c1309c1a-303e-410d-aaf0-a17e50843088
+POST http://localhost:8081/v1/ingredient HTTP/1.1
+Content-Type: {{contentType}}
+
+{
+"name": "banana",
+"grossWeight": 1000.0,
+"netWeight": 800.0,
+"rawWeight": 600.0,
+"cookedWeight": 500.0
+}
+###
+
+GET http://localhost:8081/v1/ingredient/{{ingredientId}}/correction-factor HTTP/1.1
+Content-Type: {{contentType}}
+Accept: application/json
+
+{
+  "id": "{{ingredientId}}",
+  "name": "banana",
+  "grossWeight": 1000.0,
+  "netWeight": 800.0,
+  "rawWeight": 600.0,
+  "cookedWeight": 500.0
+}

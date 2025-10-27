@@ -92,7 +92,6 @@ spring:
     jpa:
         properties:
             hibernate:
-                dialect: org.hibernate.dialect.PostgreSQLDialect
                 physical-naming-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
 #==============================

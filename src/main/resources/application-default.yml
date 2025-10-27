@@ -13,7 +13,7 @@ management:
   endpoints:
   # DESABILITA TODOS OS ENDPOINTS DO ACTUADOR
     access:
-      default: false
+      default: none
     web:
     # ALTERA O PATH DO ACTUADOR
       base-path: /
@@ -23,7 +23,7 @@ management:
   endpoint:
     health:
       # HABILITA O ENDPOINT ?/health?
-      access: true
+      access: UNRESTRICTED
       # Especifica os itens adicionais à serem monitorados pelo readiness
       group:
         liveness:
