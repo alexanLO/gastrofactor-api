@@ -1,0 +1,12 @@
+{"properties": [
+  {
+    "name": "management.health.diskpace.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'management.health.diskpace.enabled'"
+  },
+  {
+    "name": "message.exception",
+    "type": "java.lang.String",
+    "description": "A description for 'message.exception'"
+  }
+]}

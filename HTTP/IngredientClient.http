@@ -1,4 +1,4 @@
-@ingredientId = ba795d4a-d370-435a-8cc7-d6e0333ad214
+@ingredientId = c1309c1a-303e-410d-aaf0-a17e50843088
 POST http://localhost:8081/v1/ingredient HTTP/1.1
 Content-Type: {{contentType}}
 

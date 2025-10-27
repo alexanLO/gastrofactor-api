@@ -1,5 +1,6 @@
 package br.com.coccionapi.srv_factor_cc.domain.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -57,11 +58,12 @@ public class IngredientServiceTest extends IngredientMock {
 
         var request = createCorrectionFactorFaker();
 
-        when(consultIngredientPort.searchingById(any(UUID.class))).thenReturn(createIngredientFaker());
-        when(correctionFactorPort.registerCF(request)).thenReturn(createCorrectionFactorFaker());
+        when(consultIngredientPort.searchingById(ID)).thenReturn(createIngredientFaker());
+        when(correctionFactorPort.registerCF(any(CorrectionFactor.class))).thenReturn(request);
 
         var response = service.calculateCorrectionFactor(ID);
 
-        verify(correctionFactorPort, times(1)).registerCF(request);
+        verify(correctionFactorPort, times(1)).registerCF(any(CorrectionFactor.class));
+        assertEquals(request, response);
     }
 }
