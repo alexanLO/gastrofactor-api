@@ -1,9 +1,11 @@
 package br.com.coccionapi.srv_factor_cc.port.output;
 
+import java.util.UUID;
+
 import br.com.coccionapi.srv_factor_cc.domain.model.Ingredient;
 
-public interface IngredientPort {
+public interface ConsultIngredientPort {
 
-    Ingredient registerIngredient(Ingredient modelRequest);
+    Ingredient searchingById(UUID id);
     
 }
