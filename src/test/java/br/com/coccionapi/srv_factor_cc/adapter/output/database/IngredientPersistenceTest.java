@@ -13,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import br.com.coccionapi.srv_factor_cc.adapter.output.database.mapper.EntityMapper;
+import br.com.coccionapi.srv_factor_cc.adapter.output.database.repository.CookingFactorRepository;
 import br.com.coccionapi.srv_factor_cc.adapter.output.database.repository.CorrectionFactorRepository;
 import br.com.coccionapi.srv_factor_cc.adapter.output.database.repository.IngredientRepository;
 import br.com.coccionapi.srv_factor_cc.mocks.IngredientMock;
@@ -25,7 +26,10 @@ public class IngredientPersistenceTest extends IngredientMock {
     private IngredientRepository repositoryIngredient;
 
     @Mock
-    private CorrectionFactorRepository repositoryCF;
+    private CorrectionFactorRepository correctionFactorRepository;
+
+    @Mock
+    private CookingFactorRepository cookingFactorRepository;
 
     @Mock
     private EntityMapper mapper;
@@ -51,17 +55,33 @@ public class IngredientPersistenceTest extends IngredientMock {
 
     @Test
     @DisplayName("Deve salvar o fator de correção no banco de dados")
-    void mustRegisterCF() {
+    void mustRegisterCorrectionFactor() {
 
         var expected = createCorrectionFactorFaker();
         var result = createCorrectionFactorEntityFaker();
 
-        when(repositoryCF.save(result)).thenReturn(result);
+        when(correctionFactorRepository.save(result)).thenReturn(result);
         when(mapper.toSaveCorrectionFactorEntity(expected)).thenReturn(result);
 
         persistence.registerCorrectionFactor(expected);
 
-        verify(repositoryCF, times(1)).save(result);
+        verify(correctionFactorRepository, times(1)).save(result);
+        assertEquals(expected.getId(), result.getId());
+    }
+
+    @Test
+    @DisplayName("Deve salvar o fator de cocção no banco de dados")
+    void mustRegisterCookingFactor() {
+
+        var expected = createCookingFactorFaker();
+        var result = createCookingFactorEntityFaker();
+
+        when(cookingFactorRepository.save(result)).thenReturn(result);
+        when(mapper.toSaveCookingFactorEntity(expected)).thenReturn(result);
+
+        persistence.registerCookingFactor(expected);
+
+        verify(cookingFactorRepository, times(1)).save(result);
         assertEquals(expected.getId(), result.getId());
     }
 }

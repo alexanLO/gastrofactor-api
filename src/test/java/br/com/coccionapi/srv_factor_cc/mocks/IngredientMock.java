@@ -5,9 +5,12 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import br.com.coccionapi.srv_factor_cc.adapter.input.dto.requests.IngredientRequest;
+import br.com.coccionapi.srv_factor_cc.adapter.input.dto.responses.CookingFactorResponse;
 import br.com.coccionapi.srv_factor_cc.adapter.input.dto.responses.CorrectionFactorResponse;
+import br.com.coccionapi.srv_factor_cc.adapter.output.database.entity.CookingFactorEntity;
 import br.com.coccionapi.srv_factor_cc.adapter.output.database.entity.CorrectionFactorEntity;
 import br.com.coccionapi.srv_factor_cc.adapter.output.database.entity.IngredientEntity;
+import br.com.coccionapi.srv_factor_cc.domain.model.CookingFactor;
 import br.com.coccionapi.srv_factor_cc.domain.model.CorrectionFactor;
 import br.com.coccionapi.srv_factor_cc.domain.model.Ingredient;
 
@@ -15,11 +18,12 @@ public class IngredientMock {
 
     public final String name = "Banana";
     public final UUID ID = UUID.randomUUID();
-    public final BigDecimal GROSS_WEIGHT = BigDecimal.valueOf(1000.01);
-    public final BigDecimal NET_WEIGHT = BigDecimal.valueOf(800.00);
-    public final BigDecimal RAW_WEIGHT = BigDecimal.valueOf(800.00);
-    public final BigDecimal COOKED_WEIGHT = BigDecimal.valueOf(700.50);
-    public final BigDecimal CORRECTION_FACTOR = BigDecimal.valueOf(0.875);
+    public final BigDecimal GROSS_WEIGHT = BigDecimal.valueOf(1000.00);
+    public final BigDecimal NET_WEIGHT = BigDecimal.valueOf(800.0);
+    public final BigDecimal RAW_WEIGHT = BigDecimal.valueOf(800.0);
+    public final BigDecimal COOKED_WEIGHT = BigDecimal.valueOf(700.5);
+    public final BigDecimal CORRECTION_FACTOR = BigDecimal.valueOf(1, 25);
+    public final BigDecimal COOKING_FACTOR = BigDecimal.valueOf(0.83);
     public final LocalDateTime DATA_TIME_AT = LocalDateTime.now();
 
     public IngredientRequest createIngredientRequestFaker() {
@@ -83,6 +87,38 @@ public class IngredientMock {
                 GROSS_WEIGHT,
                 NET_WEIGHT,
                 CORRECTION_FACTOR,
+                DATA_TIME_AT);
+    }
+
+    public CookingFactor createCookingFactorFaker() {
+        return CookingFactor.builder()
+                .id(ID)
+                .ingredientId(ID)
+                .cookedWeight(NET_WEIGHT)
+                .rawWeight(COOKED_WEIGHT)
+                .cookingFactor(COOKING_FACTOR)
+                .calculatedAt(DATA_TIME_AT)
+                .build();
+    }
+
+    public CookingFactorResponse createCookingFactorResponseFaker() {
+        return CookingFactorResponse.builder()
+                .id(ID)
+                .ingredientId(ID)
+                .cookedWeight(NET_WEIGHT)
+                .rawWeight(COOKED_WEIGHT)
+                .cookingFactor(COOKING_FACTOR)
+                .calculatedAt(DATA_TIME_AT)
+                .build();
+    }
+
+    public CookingFactorEntity createCookingFactorEntityFaker() {
+        return new CookingFactorEntity(
+                ID,
+                createIngredientEntityFaker(),
+                RAW_WEIGHT,
+                COOKED_WEIGHT,
+                COOKING_FACTOR,
                 DATA_TIME_AT);
     }
 }

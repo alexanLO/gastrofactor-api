@@ -4,10 +4,10 @@ Content-Type: {{contentType}}
 
 {
 "name": "banana",
-"grossWeight": 1000.0,
-"netWeight": 800.0,
-"rawWeight": 600.0,
-"cookedWeight": 500.0
+"grossWeight": 1000.00,
+"netWeight": 800.00,
+"rawWeight": 600.00,
+"cookedWeight": 500.00
 }
 ###
 
