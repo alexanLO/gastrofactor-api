@@ -95,7 +95,7 @@ Este projeto não inclui dados sensíveis. O arquivo .env está ignorado via .gi
     ./mvnw springboot:run
     ```
 
-A API estará disponível em: 👉 [Swagger](http://localhost:8080)
+A API estará disponível em: 👉 [Swagger](http://localhost:8081/swagger-ui/index.html#/)
 
 ## 📖 Endpoints da API (MVP)
 
@@ -104,7 +104,7 @@ A API estará disponível em: 👉 [Swagger](http://localhost:8080)
 - POST /ingredient → criar ingrediente
 - GET /ingredient → listar ingredientes
 - GET /ingredient/{id}/correction-factor → obter fator-de-correção
-- GET /ingredient/{id}/coccion-factor → obter fator-de-cozimento
+- GET /ingredient/{id}/cooking-factor → obter fator-de-cozimento
 
 ## 🔮 Roteiro
 
