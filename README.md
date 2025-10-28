@@ -9,7 +9,7 @@ A API Coccion é uma aplicação backend desenvolvida com Spring Boot par auxili
 
 Este projeto faz parte do meu portfólio e visa demonstrar habilidades em Java, Spring Boot, APIs REST e arquitetura hexagonal. Planos futuros incluem um frontend em Angular/Typescript para consumir esta API ou transforma em um app.
 
-## 🛠️ Tecnologias:
+## 🛠️ Tecnologias
 
 - Java 21
 - Spring Boot 3+

@@ -32,13 +32,13 @@ import lombok.extern.slf4j.Slf4j;
 
 @Tag(name = "Ingredientes", description = "Gerenciamento de igredientes e calculo do fator de cocção e correção.")
 @ApiResponses(value = {
-        @ApiResponse(responseCode = "400", description = "Solicitação Inválida", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponse.class))),
-        @ApiResponse(responseCode = "401", description = "Não Autorizado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponse.class))),
-        @ApiResponse(responseCode = "403", description = "Proibido", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponse.class))),
-        @ApiResponse(responseCode = "422", description = "Não é possivel processar os dados recebidos", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponse.class))),
-        @ApiResponse(responseCode = "429", description = "Muitas solicitações realizadas", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponse.class))),
-        @ApiResponse(responseCode = "500", description = "Erro Interno do Servidor", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponse.class))),
-        @ApiResponse(responseCode = "503", description = "Serviço Indiponivel", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponse.class)))
+                @ApiResponse(responseCode = "400", description = "Solicitação Inválida", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponse.class))),
+                @ApiResponse(responseCode = "401", description = "Não Autorizado", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponse.class))),
+                @ApiResponse(responseCode = "403", description = "Proibido", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponse.class))),
+                @ApiResponse(responseCode = "422", description = "Não é possivel processar os dados recebidos", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponse.class))),
+                @ApiResponse(responseCode = "429", description = "Muitas solicitações realizadas", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponse.class))),
+                @ApiResponse(responseCode = "500", description = "Erro Interno do Servidor", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponse.class))),
+                @ApiResponse(responseCode = "503", description = "Serviço Indiponivel", content = @Content(mediaType = "application/json", schema = @Schema(implementation = ApiResponse.class)))
 })
 @Slf4j
 @RestController
@@ -46,45 +46,48 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/v1/ingredient")
 public class IngredientController {
 
-    private final IngredientUseCase ingredientUseCase;
-    private final CorrectionFactorUseCase correctionFactorUseCase;
-    private final CookingFactorUseCase cookingFactorUseCase;
+        private final IngredientUseCase ingredientUseCase;
+        private final CorrectionFactorUseCase correctionFactorUseCase;
+        private final CookingFactorUseCase cookingFactorUseCase;
 
-    private final IngredientMapper mapper;
+        private final IngredientMapper mapper;
 
-    @Operation(summary = "Registrando um novo ingrediente", method = "POST")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Registra um ingrediente com sucesso", content = @Content(schema = @Schema(implementation = BusinessException.class)))
-    })
-    @PostMapping()
-    public ResponseEntity<IngredientResponse> register(@RequestBody @Valid IngredientRequest request) {
+        @Operation(summary = "Registrando um novo ingrediente", method = "POST")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "201", description = "Registra um ingrediente com sucesso", content = @Content(schema = @Schema(implementation = BusinessException.class)))
+        })
+        @PostMapping()
+        public ResponseEntity<IngredientResponse> register(@RequestBody @Valid IngredientRequest request) {
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(mapper.toDTOResponse(ingredientUseCase.register(mapper.toModelRequest(request))));
-    }
+                return ResponseEntity.status(HttpStatus.CREATED)
+                                .body(mapper.toDTOResponse(ingredientUseCase.register(mapper.toModelRequest(request))));
+        }
 
-    @Operation(summary = "Calculando fator de correção", method = "GET")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Fator de correção calculado com sucesso", content = @Content(schema = @Schema(implementation = CorrectionFactorResponse.class)))
-    })
-    @GetMapping("/{id}/correction-factor")
-    public ResponseEntity<CorrectionFactorResponse> calculateCorrectionFactor(@PathVariable UUID id) {
-        log.info("Buscando o calculo do fator de correção do id: {}", id);
+        @Operation(summary = "Calculando fator de correção", method = "GET")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Fator de correção calculado com sucesso", content = @Content(schema = @Schema(implementation = CorrectionFactorResponse.class))),
+                        @ApiResponse(responseCode = "422", description = "Peso de ingrediente bruto ou liquido não pode ser 0", content = @Content(schema = @Schema(implementation = BusinessException.class)))
+        })
+        @GetMapping("/{id}/correction-factor")
+        public ResponseEntity<CorrectionFactorResponse> calculateCorrectionFactor(@PathVariable UUID id) {
+                log.info("Buscando o calculo do fator de correção do id: {}", id);
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(mapper.toCorrectionFactorResponse(correctionFactorUseCase.calculateCorrectionFactor(id)));
-    }
+                return ResponseEntity.status(HttpStatus.OK)
+                                .body(mapper.toCorrectionFactorResponse(
+                                                correctionFactorUseCase.calculateCorrectionFactor(id)));
+        }
 
-    @Operation(summary = "Calculando o fator de cocção", method = "GET")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Fator de cocção calculado com sucesso", content = @Content(schema = @Schema(implementation = CookingFactorResponse.class)))
-    })
-    @GetMapping("/{id}/cooking-factor")
-    public ResponseEntity<CookingFactorResponse> calculateCookingFactor(@PathVariable UUID id) {
-        log.info("Buscando o calculo do fator de cocção do id: {}", id);
+        @Operation(summary = "Calculando o fator de cocção", method = "GET")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Fator de cocção calculado com sucesso", content = @Content(schema = @Schema(implementation = CookingFactorResponse.class))),
+                        @ApiResponse(responseCode = "422", description = "Peso de ingrediente cru ou cozido não pode ser 0", content = @Content(schema = @Schema(implementation = BusinessException.class)))
+        })
+        @GetMapping("/{id}/cooking-factor")
+        public ResponseEntity<CookingFactorResponse> calculateCookingFactor(@PathVariable UUID id) {
+                log.info("Buscando o calculo do fator de cocção do id: {}", id);
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(mapper.toCookingFactorResponse(cookingFactorUseCase.calculateCookingFactor(id)));
-    }
+                return ResponseEntity.status(HttpStatus.OK)
+                                .body(mapper.toCookingFactorResponse(cookingFactorUseCase.calculateCookingFactor(id)));
+        }
 
 }
