@@ -2,12 +2,16 @@
 
 ## 📌 Visão Geral
 
-A API Coccion é uma aplicação backend desenvolvida com Spring Boot par auxiliar cozinheiros, nutricionistas e estudnates a calcular:
+A API Coccion é uma aplicação backend desenvolvida com Spring Boot par auxiliar cozinheiros, nutricionistas e estudantes a calcular:
 
-- Fator de Correção: peerda durante a limpeza/preparação (ex: expansão do arroz, encolhimento da carne).
-- Fator de Cocção: perda ou ganho durante o cozimento (ex: expansão do arroz,e ncolhimento da carne).
+- Fator de Correção: perda durante a limpeza/preparação.
+- Fator de Cocção: perda ou ganho durante o cozimento.
 
-Este projeto faz parte do meu portfólio e visa demonstrar habilidades em Java, Spring Boot, APIs REST e arquitetura hexagonal. Planos futuros incluem um frontend em Angular/Typescript para consumir esta API ou transforma em um app.
+Este projeto faz parte do meu portfólio e visa demonstrar habilidades em Java, Spring Boot, APIs REST e arquitetura hexagonal. Planos futuros incluem um frontend em Angular/Typescript para consumir esta API ou transformá-la em um aplicativo.
+
+## 📄 Licença
+
+Este projeto está licenciado sob os termos da Licença Apache 2.0 — veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 ## 🛠️ Tecnologias
 
@@ -27,6 +31,14 @@ Este projeto faz parte do meu portfólio e visa demonstrar habilidades em Java, 
 Ingrediente: qualquer alimento usado para cálculo (vegetais, carne, grãos, etc.).
 Fator de Correção (FC): Fórmula → PesoGross / PesoLíquido
 Fator de Cozimento (FCC): Fórmula → PesoCozido / PesoCru
+
+## 🚀 Funcionalidades
+
+- Cadastro de ingredientes
+- Cálculo de fator de correção (`grossWeight / netWeight`)
+- Cálculo de fator de cocção (`cookedWeight / rawWeight`)
+- Histórico de ingredientes com paginação
+- Documentação da API via Swagger
 
 ## 📁 Estrutura do Projeto
 
@@ -57,12 +69,20 @@ src/
          └── db/
 ```
 
+- **Domain**: Regras de negócio puras
+- **Application**: Casos de uso
+- **Inbound Port**: Interface de entrada (IngredientUseCase)
+- **Outbound Port**: Interface de saída (IngredientRepository)
+- **Adapters**: Implementações concretas (Controller + JPA)
+- **Configuration**: Swagger, Profiles, etc.
+
 ## 🛡️ Segurança
+
 Este projeto não inclui dados sensíveis. O arquivo .env está ignorado via .gitignore. Use o .env.example como referência para configurar seu ambiente local.
 
 ## 🚀 Começando
 
-1. Clone o repositório: git clone Link
+1. git clone https: https://github.com/alexanLO/srv-factor-cc.git
 2. Configure o banco de dados:
     Edite src/main/resources/application.yml:
 
@@ -92,7 +112,13 @@ Este projeto não inclui dados sensíveis. O arquivo .env está ignorado via .gi
 4. Execute a aplicação
 
     ```bash
-    ./mvnw springboot:run
+    ./mvnw spring-boot:run
+    ```
+
+5. Rodando o FLyway:
+
+    ```bash
+    ./mvnw spring-boot:run
     ```
 
 A API estará disponível em: 👉 [Swagger](http://localhost:8081/swagger-ui/index.html#/)
@@ -120,3 +146,4 @@ Desenvolvido por **Alexan Matheusa Lima de Oliveira** — minha inspiração par
 
 [Site Pessoal](Futuramente)  
 [Linkedin](https://www.linkedin.com/in/alexan-limaa/)
+
