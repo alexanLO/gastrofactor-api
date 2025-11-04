@@ -11,6 +11,7 @@ import br.com.coccionapi.srv_factor_cc.adapter.output.database.repository.Ingred
 import br.com.coccionapi.srv_factor_cc.domain.model.CookingFactor;
 import br.com.coccionapi.srv_factor_cc.domain.model.CorrectionFactor;
 import br.com.coccionapi.srv_factor_cc.domain.model.Ingredient;
+import br.com.coccionapi.srv_factor_cc.exceptions.NotFoundException;
 import br.com.coccionapi.srv_factor_cc.port.output.ConsultIngredientPort;
 import br.com.coccionapi.srv_factor_cc.port.output.CookingFactorPort;
 import br.com.coccionapi.srv_factor_cc.port.output.CorrectionFactorPort;
@@ -36,9 +37,8 @@ public class IngredientPersistence implements IngredientPort, ConsultIngredientP
 
     @Override
     public Ingredient searchingById(UUID id) {
-        // TODO Criar um NotFoundException personalizado.
         return mapper.toModelIngredient(ingredientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(NOT_FOUND)));
+                .orElseThrow(() -> new NotFoundException(NOT_FOUND)));
     }
 
     // * Fator de Correção Repository/Criteria */
@@ -46,7 +46,8 @@ public class IngredientPersistence implements IngredientPort, ConsultIngredientP
     public CorrectionFactor registerCorrectionFactor(CorrectionFactor request) {
         return mapper.toModelCorrectionFactor(cFactorRepository.save(mapper.toSaveCorrectionFactorEntity(request)));
     }
-
+    
+    // * Fator de cocção' Repository/Criteria */
     @Override
     public CookingFactor registerCookingFactor(CookingFactor request) {
         return mapper.toModelCookingFactor(cookingFactorRepository.save(mapper.toSaveCookingFactorEntity(request)));

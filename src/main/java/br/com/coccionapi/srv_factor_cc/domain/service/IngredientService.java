@@ -5,11 +5,13 @@ import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import br.com.coccionapi.srv_factor_cc.domain.model.CookingFactor;
 import br.com.coccionapi.srv_factor_cc.domain.model.CorrectionFactor;
 import br.com.coccionapi.srv_factor_cc.domain.model.Ingredient;
+import br.com.coccionapi.srv_factor_cc.exceptions.BusinessException;
 import br.com.coccionapi.srv_factor_cc.port.input.CookingFactorUseCase;
 import br.com.coccionapi.srv_factor_cc.port.input.CorrectionFactorUseCase;
 import br.com.coccionapi.srv_factor_cc.port.input.IngredientUseCase;
@@ -45,8 +47,7 @@ public class IngredientService implements IngredientUseCase, CorrectionFactorUse
 
         if (ingredient.getGrossWeight().compareTo(BigDecimal.ZERO) <= 0
                 || ingredient.getNetWeight().compareTo(BigDecimal.ZERO) <= 0) {
-            // TODO criar exceptions personalizada invez de usar RunTime.
-            throw new RuntimeException(ERROR_GROSS_VALUE_ZERO);
+           throw new BusinessException(HttpStatus.UNPROCESSABLE_ENTITY.value(), ERROR_GROSS_VALUE_ZERO);
         }
 
         // * Calculo do fator de correção */
@@ -70,8 +71,7 @@ public class IngredientService implements IngredientUseCase, CorrectionFactorUse
 
         if (ingredient.getRawWeight().compareTo(BigDecimal.ZERO) <= 0
                 || ingredient.getCookedWeight().compareTo(BigDecimal.ZERO) <= 0) {
-            // TODO criar exceptions personalizada invez de usar RunTime.
-            throw new RuntimeException(ERROR_RAW_VALUE_ZERO);
+            throw new BusinessException(HttpStatus.UNPROCESSABLE_ENTITY.value(), ERROR_RAW_VALUE_ZERO);
         }
 
         BigDecimal resultCalcFC = ingredient.getCookedWeight().divide(ingredient.getRawWeight(), 2,  RoundingMode.HALF_UP);
