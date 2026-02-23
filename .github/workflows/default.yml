@@ -22,9 +22,7 @@ jobs:
         with:
           java-version: "21"
           distribution: "temurin"
-
-      - name: Exportar JAVA_HOME
-        run: echo "JAVA_HOME=$JAVA_HOME" >> $GITHUB_ENV
-
+      - name: Verificar versão do Java
+        run: java -version && javac -version
       - name: Compilar com Maven
         run: mvn clean install
