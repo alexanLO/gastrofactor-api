@@ -12,10 +12,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import br.com.coccionapi.srv_factor_cc.adapter.output.database.mapper.EntityMapper;
-import br.com.coccionapi.srv_factor_cc.adapter.output.database.repository.CookingFactorRepository;
-import br.com.coccionapi.srv_factor_cc.adapter.output.database.repository.CorrectionFactorRepository;
-import br.com.coccionapi.srv_factor_cc.adapter.output.database.repository.IngredientRepository;
+import br.com.coccionapi.factorcc.adapter.output.database.IngredientPersistence;
+import br.com.coccionapi.factorcc.adapter.output.database.mapper.EntityMapper;
+import br.com.coccionapi.factorcc.adapter.output.database.repository.CookingFactorRepository;
+import br.com.coccionapi.factorcc.adapter.output.database.repository.CorrectionFactorRepository;
+import br.com.coccionapi.factorcc.adapter.output.database.repository.IngredientRepository;
 import br.com.coccionapi.srv_factor_cc.mocks.IngredientMock;
 
 @ExtendWith(MockitoExtension.class)

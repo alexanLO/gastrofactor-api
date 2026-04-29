@@ -4,15 +4,15 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-import br.com.coccionapi.srv_factor_cc.adapter.input.dto.requests.IngredientRequest;
-import br.com.coccionapi.srv_factor_cc.adapter.input.dto.responses.CookingFactorResponse;
-import br.com.coccionapi.srv_factor_cc.adapter.input.dto.responses.CorrectionFactorResponse;
-import br.com.coccionapi.srv_factor_cc.adapter.output.database.entity.CookingFactorEntity;
-import br.com.coccionapi.srv_factor_cc.adapter.output.database.entity.CorrectionFactorEntity;
-import br.com.coccionapi.srv_factor_cc.adapter.output.database.entity.IngredientEntity;
-import br.com.coccionapi.srv_factor_cc.domain.model.CookingFactor;
-import br.com.coccionapi.srv_factor_cc.domain.model.CorrectionFactor;
-import br.com.coccionapi.srv_factor_cc.domain.model.Ingredient;
+import br.com.coccionapi.factorcc.adapter.input.dto.requests.IngredientRequest;
+import br.com.coccionapi.factorcc.adapter.input.dto.responses.CookingFactorResponse;
+import br.com.coccionapi.factorcc.adapter.input.dto.responses.CorrectionFactorResponse;
+import br.com.coccionapi.factorcc.adapter.output.database.entity.CookingFactorEntity;
+import br.com.coccionapi.factorcc.adapter.output.database.entity.CorrectionFactorEntity;
+import br.com.coccionapi.factorcc.adapter.output.database.entity.IngredientEntity;
+import br.com.coccionapi.factorcc.domain.model.CookingFactor;
+import br.com.coccionapi.factorcc.domain.model.CorrectionFactor;
+import br.com.coccionapi.factorcc.domain.model.Ingredient;
 
 public class IngredientMock {
 

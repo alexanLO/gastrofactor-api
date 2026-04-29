@@ -28,9 +28,9 @@ import org.springframework.web.context.WebApplicationContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.coccionapi.srv_factor_cc.adapter.input.dto.responses.CookingFactorResponse;
-import br.com.coccionapi.srv_factor_cc.adapter.input.dto.responses.CorrectionFactorResponse;
-import br.com.coccionapi.srv_factor_cc.adapter.input.dto.responses.IngredientResponse;
+import br.com.coccionapi.factorcc.adapter.input.dto.responses.CookingFactorResponse;
+import br.com.coccionapi.factorcc.adapter.input.dto.responses.CorrectionFactorResponse;
+import br.com.coccionapi.factorcc.adapter.input.dto.responses.IngredientResponse;
 import br.com.coccionapi.srv_factor_cc.mocks.IngredientMock;
 
 @SpringBootTest

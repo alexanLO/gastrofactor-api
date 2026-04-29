@@ -14,14 +14,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import br.com.coccionapi.srv_factor_cc.domain.model.CookingFactor;
-import br.com.coccionapi.srv_factor_cc.domain.model.CorrectionFactor;
-import br.com.coccionapi.srv_factor_cc.domain.model.Ingredient;
+import br.com.coccionapi.factorcc.domain.model.CookingFactor;
+import br.com.coccionapi.factorcc.domain.model.CorrectionFactor;
+import br.com.coccionapi.factorcc.domain.model.Ingredient;
+import br.com.coccionapi.factorcc.domain.service.IngredientService;
+import br.com.coccionapi.factorcc.port.output.ConsultIngredientPort;
+import br.com.coccionapi.factorcc.port.output.CookingFactorPort;
+import br.com.coccionapi.factorcc.port.output.CorrectionFactorPort;
+import br.com.coccionapi.factorcc.port.output.IngredientPort;
 import br.com.coccionapi.srv_factor_cc.mocks.IngredientMock;
-import br.com.coccionapi.srv_factor_cc.port.output.ConsultIngredientPort;
-import br.com.coccionapi.srv_factor_cc.port.output.CookingFactorPort;
-import br.com.coccionapi.srv_factor_cc.port.output.CorrectionFactorPort;
-import br.com.coccionapi.srv_factor_cc.port.output.IngredientPort;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Valida as regras de negócios da camada service")

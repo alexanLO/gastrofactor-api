@@ -28,15 +28,16 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import br.com.coccionapi.srv_factor_cc.adapter.input.dto.requests.IngredientRequest;
-import br.com.coccionapi.srv_factor_cc.adapter.input.mapper.IngredientMapper;
-import br.com.coccionapi.srv_factor_cc.domain.model.CookingFactor;
-import br.com.coccionapi.srv_factor_cc.domain.model.CorrectionFactor;
-import br.com.coccionapi.srv_factor_cc.domain.model.Ingredient;
+import br.com.coccionapi.factorcc.adapter.input.controller.IngredientController;
+import br.com.coccionapi.factorcc.adapter.input.dto.requests.IngredientRequest;
+import br.com.coccionapi.factorcc.adapter.input.mapper.IngredientMapper;
+import br.com.coccionapi.factorcc.domain.model.CookingFactor;
+import br.com.coccionapi.factorcc.domain.model.CorrectionFactor;
+import br.com.coccionapi.factorcc.domain.model.Ingredient;
+import br.com.coccionapi.factorcc.port.input.CookingFactorUseCase;
+import br.com.coccionapi.factorcc.port.input.CorrectionFactorUseCase;
+import br.com.coccionapi.factorcc.port.input.IngredientUseCase;
 import br.com.coccionapi.srv_factor_cc.mocks.IngredientMock;
-import br.com.coccionapi.srv_factor_cc.port.input.CookingFactorUseCase;
-import br.com.coccionapi.srv_factor_cc.port.input.CorrectionFactorUseCase;
-import br.com.coccionapi.srv_factor_cc.port.input.IngredientUseCase;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("Valida as funcionalidades da camada controller")
