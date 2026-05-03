@@ -11,7 +11,9 @@ import br.com.coccionapi.factorcc.adapters.output.persistence.repository.FoodYie
 import br.com.coccionapi.factorcc.application.usecase.calculator.CalculatorUseCase;
 import br.com.coccionapi.factorcc.application.usecase.calculator.CalculatorUseCaseImp;
 import br.com.coccionapi.factorcc.domain.service.calculator.strategy.CalculatorStrategy;
+import br.com.coccionapi.factorcc.domain.service.calculator.strategy.CookedCalculatorStrategy;
 import br.com.coccionapi.factorcc.domain.service.calculator.strategy.GrossCalculatorStrategy;
+import br.com.coccionapi.factorcc.domain.service.calculator.strategy.NetCalculatorStrategy;
 import br.com.coccionapi.factorcc.port.output.FoodYieldPort;
 
 @Configuration
@@ -20,6 +22,16 @@ public class BeanConfig {
     @Bean
     public GrossCalculatorStrategy grossCalculatorStrategy() {
         return new GrossCalculatorStrategy();
+    }
+
+    @Bean
+    public NetCalculatorStrategy netCalculatorStrategy() {
+        return new NetCalculatorStrategy();
+    }
+
+    @Bean
+    public CookedCalculatorStrategy cookedCalculatorStrategy() {
+        return new CookedCalculatorStrategy();
     }
 
     @Bean

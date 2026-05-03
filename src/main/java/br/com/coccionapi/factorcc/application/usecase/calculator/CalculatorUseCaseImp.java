@@ -30,7 +30,7 @@ public class CalculatorUseCaseImp implements CalculatorUseCase {
         FoodYieldVO foodYield = foodYieldPort.getByName(command.foodName())
                 .orElseThrow(() -> new NotFoundException("Alimento não encontrado"));
         log.debug("Alimento encontrado: nome={}, fator_correcao={}, fator_cocção={}",
-                foodYield.foodName(), foodYield.correctionFactor(), foodYield.cookingYield());
+                foodYield.foodName(), foodYield.correctionFactor(), foodYield.coccionFactor());
 
         CalculatorStrategy strategy = caculatorStrategy.stream()
                 .filter(s -> s.supports(command.typeWeight()))

@@ -25,7 +25,7 @@ public class FoodYieldPersistence implements FoodYieldPort {
         Optional<FoodYieldVO> result = Optional.ofNullable(foodYieldEntity)
                 .map(entity -> {
                     log.debug("Alimento encontrado: id={}, nome={}, fator_correcao={}, fator_cocção={}", 
-                        entity.getId(), entity.getFoodName(), entity.getCorrectionFactor(), entity.getCookingYield());
+                        entity.getId(), entity.getFoodName(), entity.getCorrectionFactor(), entity.getCoccionFactor());
                     return calculatorMapper.fromEntityToModel(entity);
                 });
         
