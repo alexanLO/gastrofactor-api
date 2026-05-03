@@ -15,6 +15,7 @@ import br.com.coccionapi.factorcc.domain.command.CalculatorCommand;
 import br.com.coccionapi.factorcc.domain.enums.TypeWeightEnum;
 import br.com.coccionapi.factorcc.domain.model.CalculatorVO;
 import br.com.coccionapi.factorcc.domain.model.FoodYieldVO;
+import br.com.coccionapi.factorcc.shared.utils.EnumUtils;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, builder = @Builder(disableBuilder = true), injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public interface CalculatorMapper {
@@ -27,7 +28,7 @@ public interface CalculatorMapper {
     FoodYieldVO fromEntityToModel(FoodYieldEntity eFoodYieldEntity);
 
     default TypeWeightEnum mapTypeWeight(String typeWeight) {
-        return TypeWeightEnum.valueOf(typeWeight.toUpperCase());
+        return EnumUtils.getEnumFromStringOrThrow(TypeWeightEnum.class, typeWeight);
     }
 
 }

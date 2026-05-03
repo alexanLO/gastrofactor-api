@@ -7,6 +7,7 @@ import br.com.coccionapi.factorcc.domain.command.CalculatorCommand;
 import br.com.coccionapi.factorcc.domain.enums.TypeWeightEnum;
 import br.com.coccionapi.factorcc.domain.model.CalculatorVO;
 import br.com.coccionapi.factorcc.domain.model.FoodYieldVO;
+import br.com.coccionapi.factorcc.shared.utils.EnumUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -14,6 +15,7 @@ public class GrossCalculatorStrategy implements CalculatorStrategy {
 
   @Override
   public boolean supports(TypeWeightEnum typeWeight) {
+    EnumUtils.validateNotNull(typeWeight, "Tipo de peso não pode ser nulo");
     return typeWeight == TypeWeightEnum.GROSS;
   }
 

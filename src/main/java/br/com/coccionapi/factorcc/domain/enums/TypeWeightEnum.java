@@ -5,5 +5,4 @@ public enum TypeWeightEnum {
     GROSS,
     NET,
     COOKED
-
 }

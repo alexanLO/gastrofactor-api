@@ -1,32 +1,8 @@
-@ingredientId = c3e458e0-3cce-4e61-a5e1-cfa90522c834
-POST http://localhost:8081/v1/ingredient HTTP/1.1
-Content-Type: {{contentType}}
-
-{
-"name": "banana",
-"grossWeight": 1000.00,
-"netWeight": 800.00,
-"rawWeight": 600.00,
-"cookedWeight": 500.00
-}
-###
-
-GET http://localhost:8081/v1/ingredient/{{ingredientId}}/correction-factor HTTP/1.1
-Content-Type: {{contentType}}
-Accept: application/json
-
-###
-
-GET http://localhost:8081/v1/ingredient/{{ingredientId}}/cooking-factor HTTP/1.1
-Content-Type: {{contentType}}
-Accept: application/json
-
-###
 POST http://localhost:8081/v1/calculadora HTTP/1.1
 Content-Type: {{contentType}}
 
 {
 "foodName": "Cenoura",
 "foodWeight": 900.00,
-"typeWeight": "GROSS"
+"typeWeight": "COOKEDD"
 }
