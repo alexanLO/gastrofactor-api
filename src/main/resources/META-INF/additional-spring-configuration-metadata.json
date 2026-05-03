@@ -8,5 +8,40 @@
     "name": "message.exception",
     "type": "java.lang.String",
     "description": "A description for 'message.exception'"
+  },
+  {
+    "name": "management.endpoints.exposure.include",
+    "type": "java.lang.String",
+    "description": "A description for 'management.endpoints.exposure.include'"
+  },
+  {
+    "name": "management.endpoint.group.liveness.include",
+    "type": "java.lang.String",
+    "description": "A description for 'management.endpoint.group.liveness.include'"
+  },
+  {
+    "name": "management.endpoint.group.readiness.include",
+    "type": "java.lang.String",
+    "description": "A description for 'management.endpoint.group.readiness.include'"
+  },
+  {
+    "name": "management.endpoint.probes.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'management.endpoint.probes.enabled'"
+  },
+  {
+    "name": "management.endpoint.show-details",
+    "type": "java.lang.String",
+    "description": "A description for 'management.endpoint.show-details'"
+  },
+  {
+    "name": "management.tracing.sampling.propagation",
+    "type": "java.lang.String",
+    "description": "A description for 'management.tracing.sampling.propagation'"
+  },
+  {
+    "name": "springdoc.swagger-ui.tagSorter",
+    "type": "java.lang.String",
+    "description": "A description for 'springdoc.swagger-ui.tagSorter'"
   }
 ]}
