@@ -2,38 +2,31 @@ name: SonarCloud Analysis
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
 
 jobs:
-  build:
+  sonar:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Set up JDK
+      - name: Setup Java 21
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '21'
-
-      - name: Cache Maven
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-maven
-
-      - name: Build + Test + Coverage
-        run: mvn clean verify
+          distribution: temurin
+          java-version: 21
+          cache: maven
 
       - name: SonarCloud Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           mvn sonar:sonar \
-            -Dsonar.projectKey=$SONAR_PROJECT_KEY \
-            -Dsonar.organization=$SONAR_ORG \
+            -Dsonar.projectKey=alexanLO_gastrofactor-api \
+            -Dsonar.organization=alexanlo \
             -Dsonar.host.url=https://sonarcloud.io \
             -Dsonar.login=$SONAR_TOKEN

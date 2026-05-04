@@ -14,7 +14,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 🔥 IMPORTANTE: garantir Java correto
       - name: Setup Java 21
         uses: actions/setup-java@v4
         with:
@@ -22,17 +21,10 @@ jobs:
           java-version: 21
           cache: maven
 
-      # 🔍 DEBUG (ESSENCIAL)
-      - name: Check Java Version
+      - name: Debug Java
         run: |
           java -version
           mvn -version
 
-      - name: Cache Maven (optional now)
-        uses: actions/cache@v4
-        with:
-          path: ~/.m2
-          key: maven-${{ github.run_id }}
-          restore-keys: maven-
       - name: Build + Test
-        run: mvn clean verify
+        run: mvn clean verify -U --no-transfer-progress
