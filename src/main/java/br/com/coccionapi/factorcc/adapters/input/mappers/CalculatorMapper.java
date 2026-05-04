@@ -1,4 +1,4 @@
-package br.com.coccionapi.factorcc.adapters.output.persistence.mappers;
+package br.com.coccionapi.factorcc.adapters.input.mappers;
 
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
@@ -8,8 +8,8 @@ import org.mapstruct.MappingConstants;
 import org.mapstruct.NullValueCheckStrategy;
 import org.mapstruct.ReportingPolicy;
 
-import br.com.coccionapi.factorcc.adapters.input.controllers.calculator.dto.request.CalculatorRequest;
-import br.com.coccionapi.factorcc.adapters.input.controllers.calculator.dto.response.CalculatorResponse;
+import br.com.coccionapi.factorcc.adapters.input.api.calculator.dto.request.CalculatorRequest;
+import br.com.coccionapi.factorcc.adapters.input.api.calculator.dto.response.CalculatorResponse;
 import br.com.coccionapi.factorcc.adapters.output.persistence.entity.FoodYieldEntity;
 import br.com.coccionapi.factorcc.domain.command.CalculatorCommand;
 import br.com.coccionapi.factorcc.domain.enums.TypeWeightEnum;

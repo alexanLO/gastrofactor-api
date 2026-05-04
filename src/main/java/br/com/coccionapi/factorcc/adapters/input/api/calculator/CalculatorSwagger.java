@@ -1,9 +1,9 @@
-package br.com.coccionapi.factorcc.adapters.input.controllers.calculator;
+package br.com.coccionapi.factorcc.adapters.input.api.calculator;
 
 import org.springframework.http.ResponseEntity;
 
-import br.com.coccionapi.factorcc.adapters.input.controllers.calculator.dto.request.CalculatorRequest;
-import br.com.coccionapi.factorcc.adapters.input.controllers.calculator.dto.response.CalculatorResponse;
+import br.com.coccionapi.factorcc.adapters.input.api.calculator.dto.request.CalculatorRequest;
+import br.com.coccionapi.factorcc.adapters.input.api.calculator.dto.response.CalculatorResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

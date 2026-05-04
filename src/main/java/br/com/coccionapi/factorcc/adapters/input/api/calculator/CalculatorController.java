@@ -1,4 +1,4 @@
-package br.com.coccionapi.factorcc.adapters.input.controllers.calculator;
+package br.com.coccionapi.factorcc.adapters.input.api.calculator;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.coccionapi.factorcc.adapters.input.controllers.calculator.dto.request.CalculatorRequest;
-import br.com.coccionapi.factorcc.adapters.input.controllers.calculator.dto.response.CalculatorResponse;
-import br.com.coccionapi.factorcc.adapters.output.persistence.mappers.CalculatorMapper;
-import br.com.coccionapi.factorcc.application.usecase.calculator.CalculatorUseCase;
+import br.com.coccionapi.factorcc.adapters.input.api.calculator.dto.request.CalculatorRequest;
+import br.com.coccionapi.factorcc.adapters.input.api.calculator.dto.response.CalculatorResponse;
+import br.com.coccionapi.factorcc.adapters.input.mappers.CalculatorMapper;
+import br.com.coccionapi.factorcc.port.input.CalculatorUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

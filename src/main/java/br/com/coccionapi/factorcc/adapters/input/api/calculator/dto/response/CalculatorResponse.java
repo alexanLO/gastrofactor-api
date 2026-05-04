@@ -1,4 +1,4 @@
-package br.com.coccionapi.factorcc.adapters.input.controllers.calculator.dto.response;
+package br.com.coccionapi.factorcc.adapters.input.api.calculator.dto.response;
 
 import java.math.BigDecimal;
 

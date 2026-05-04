@@ -10,6 +10,7 @@ import br.com.coccionapi.factorcc.domain.model.FoodYieldVO;
 import br.com.coccionapi.factorcc.domain.service.calculator.strategy.CalculatorStrategy;
 import br.com.coccionapi.factorcc.infrastructure.exceptions.BusinessException;
 import br.com.coccionapi.factorcc.infrastructure.exceptions.NotFoundException;
+import br.com.coccionapi.factorcc.port.input.CalculatorUseCase;
 import br.com.coccionapi.factorcc.port.output.FoodYieldPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

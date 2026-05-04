@@ -2,8 +2,8 @@ package br.com.coccionapi.factorcc.adapters.output.persistence;
 
 import java.util.Optional;
 
+import br.com.coccionapi.factorcc.adapters.input.mappers.CalculatorMapper;
 import br.com.coccionapi.factorcc.adapters.output.persistence.entity.FoodYieldEntity;
-import br.com.coccionapi.factorcc.adapters.output.persistence.mappers.CalculatorMapper;
 import br.com.coccionapi.factorcc.adapters.output.persistence.repository.FoodYieldJpaRepository;
 import br.com.coccionapi.factorcc.domain.model.FoodYieldVO;
 import br.com.coccionapi.factorcc.port.output.FoodYieldPort;
@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-public class FoodYieldPersistence implements FoodYieldPort {
+public class FoodYieldAdapter implements FoodYieldPort {
 
     private final CalculatorMapper calculatorMapper;
     private final FoodYieldJpaRepository foodYieldJpaRepository;
