@@ -9,7 +9,7 @@ FROM eclipse-temurin:21-jdk
 
 WORKDIR /app
 
-COPY --from=build /app/target/srv-factor-cc-0.0.1.jar app.jar
+COPY --from=build /app/target/* app.jar
 
 EXPOSE 8080
 
