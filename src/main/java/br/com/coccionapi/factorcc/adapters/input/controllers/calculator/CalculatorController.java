@@ -3,6 +3,7 @@ package br.com.coccionapi.factorcc.adapters.input.controllers.calculator;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Validated
+@CrossOrigin(origins = "http://localhost:4200") //TODO ajustar isso depois
 @RestController
 @RequestMapping("/v1/calculadora")
 public class CalculatorController implements CalculatorSwagger {
