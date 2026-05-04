@@ -94,7 +94,7 @@ spring:
         init:
             mode: always
             continue-on-error: true
-            data-locations: classpath:db/*.sql
+            data-locations: classpath:db/migrations/*.sql
     h2:
         console:
             enabled: true

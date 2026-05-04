@@ -1,0 +1,14 @@
+# Usa uma imagem leve com Java 17
+FROM eclipse-temurin:17-jdk-alpine
+
+# Define o diretório de trabalho
+WORKDIR /app
+
+# Copia o JAR gerado pelo Maven
+COPY target/*.jar app.jar
+
+# Expõe a porta padrão do Spring Boot
+EXPOSE 8080
+
+# Comando para iniciar o app
+CMD ["java", "-jar", "app.jar"]

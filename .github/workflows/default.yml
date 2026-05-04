@@ -1,30 +1,28 @@
-# name: Dev Build and Scan
+name: Dev Build and Scan
 
-# on:
-#   push:
-#     branches:
-#       - prod
-#       - dev
-#       - "feature/**"
-#   pull_request:
-#     types: [opened, synchronize, reopened]
+on:
+  push:
+    branches:
+      - prod
+      - dev
+      - "feature/**"
+  pull_request:
+    types: [opened, synchronize, reopened]
 
-# jobs:
-#   build-dev:
-#     runs-on: ubuntu-latest
+jobs:
+  build-dev:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Checkout do código
-#         uses: actions/checkout@v3
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
 
-#       - name: Configurar JDK
-#         uses: actions/setup-java@v3
-#         with:
-#           java-version: "21"
-#           distribution: "temurin"
-
-#       - name: Exportar JAVA_HOME
-#         run: echo "JAVA_HOME=$JAVA_HOME" >> $GITHUB_ENV
-
-#       - name: Compilar com Maven
-#         run: mvn clean install
+      - name: Configurar JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: "temurin"
+      - name: Verificar versão do Java
+        run: java -version && javac -version
+      - name: Compilar com Maven
+        run: mvn clean install
