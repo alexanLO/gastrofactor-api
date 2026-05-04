@@ -14,18 +14,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Cache Maven
+      # 🔥 IMPORTANTE: garantir Java correto
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+
+      # 🔍 DEBUG (ESSENCIAL)
+      - name: Check Java Version
+        run: |
+          java -version
+          mvn -version
+
+      - name: Cache Maven (optional now)
         uses: actions/cache@v4
         with:
           path: ~/.m2
           key: maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: maven-
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: 21
 
       - name: Build + Test
         run: mvn clean verify
