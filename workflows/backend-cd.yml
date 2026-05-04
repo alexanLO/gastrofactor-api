@@ -1,0 +1,22 @@
+name: Backend CD
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  deploy-dev:
+    if: github.ref == 'refs/heads/develop'
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: echo "Deploy BACKEND HOM (develop)"
+
+  deploy-prod:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: echo "Deploy BACKEND PROD"
