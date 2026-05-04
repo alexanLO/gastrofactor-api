@@ -32,8 +32,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ~/.m2
-          key: maven-${{ hashFiles('**/pom.xml') }}
+          key: maven-${{ github.run_id }}
           restore-keys: maven-
-
       - name: Build + Test
         run: mvn clean verify
