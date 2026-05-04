@@ -19,10 +19,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Validated
-@CrossOrigin(origins = {
-        "http://localhost:4200",
-        "https://gastrofactor-old.onrender.com"
-}) // TODO ajustar isso depois@RestController
 @RequestMapping("/v1/calculadora")
 public class CalculatorController implements CalculatorSwagger {
 
