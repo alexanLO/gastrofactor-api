@@ -1,0 +1,11 @@
+version: 2
+
+# Esta configuracao do Dependabot est configurada para verificar atualizaes de dependncias tanto para o backend (Maven)
+# quanto para o frontend (Node) semanalmente. O Dependabot ir criar pull requests automticas com as atualizaes de dependncias, 
+#facilitando a manuteno e a segurana do projeto.
+updates:
+  # Backend (Maven)
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "weekly"
