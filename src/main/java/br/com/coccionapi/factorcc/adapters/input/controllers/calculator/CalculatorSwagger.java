@@ -14,7 +14,7 @@ import jakarta.validation.Valid;
 
 public interface CalculatorSwagger {
 
-    @Operation(summary = "Calcula o fator de correção e cocção do alimento", method = "POST")
+    @Operation(summary = "Calcula o fator de correção e cocção do alimento", description = "Realiza o cálculo do fator de correção e cocção com base nas informações do alimento e do tipo de peso informado", method = "POST")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Cálculo realizado com sucesso", content = @Content(schema = @Schema(implementation = CalculatorResponse.class))),
             @ApiResponse(responseCode = "400", description = "Requisição inválida ou tipo de peso não suportado"),
