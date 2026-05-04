@@ -15,7 +15,7 @@
 
     <groupId>br.com.coccionapi</groupId>
     <artifactId>srv-factor-cc</artifactId>
-    <version>0.0.5</version>
+    <version>0.0.6</version>
     <name>srv-factor-cc</name>
 
     <properties>
