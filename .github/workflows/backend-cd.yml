@@ -12,11 +12,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - run: echo "Deploy BACKEND HOM (develop)"
+      - name: Deploy DEV
+        run: echo "Deploy BACKEND HOM (develop)"
 
   deploy-prod:
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
-      - run: echo "Deploy BACKEND PROD"
+      - name: Deploy PROD
+        run: echo "Deploy BACKEND PROD"
