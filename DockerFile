@@ -1,14 +1,28 @@
-# Usa uma imagem leve com Java 17
-FROM eclipse-temurin:17-jdk-alpine
-
-# Define o diretório de trabalho
+# Etapa 1: Build do projeto
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
 
-# Copia o JAR gerado pelo Maven
-COPY target/*.jar app.jar
+# Copia o pom.xml e baixa dependências
+COPY pom.xml .
+RUN mvn dependency:go-offline
 
-# Expõe a porta padrão do Spring Boot
+# Copia o código-fonte e compila
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# Etapa 2: Executar o JAR gerado
+FROM eclipse-temurin:17-jdk-alpine
+WORKDIR /app
+
+# Copia o JAR da etapa anterior
+COPY --from=build /app/target/*.jar app.jar
+
+# Define a porta (Render usa variável PORT)
+ENV PORT=8080
 EXPOSE 8080
+
+# Define o perfil de ambiente (prod)
+ENV SPRING_PROFILES_ACTIVE=prod
 
 # Comando para iniciar o app
 CMD ["java", "-jar", "app.jar"]
