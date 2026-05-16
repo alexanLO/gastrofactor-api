@@ -1,4 +1,4 @@
-package br.com.coccionapi.factorcc.adapters.input.mappers;
+package br.com.coccionapi.factorcc.adapters.mappers;
 
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;

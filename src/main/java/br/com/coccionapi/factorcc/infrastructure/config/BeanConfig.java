@@ -2,19 +2,25 @@ package br.com.coccionapi.factorcc.infrastructure.config;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import br.com.coccionapi.factorcc.adapters.input.mappers.CalculatorMapper;
-import br.com.coccionapi.factorcc.adapters.output.persistence.FoodYieldAdapter;
+import br.com.coccionapi.factorcc.adapters.mappers.CalculatorMapper;
+import br.com.coccionapi.factorcc.adapters.output.persistence.FoodYieldPersistence;
 import br.com.coccionapi.factorcc.adapters.output.persistence.repository.FoodYieldJpaRepository;
-import br.com.coccionapi.factorcc.application.usecase.calculator.CalculatorUseCaseImp;
+import br.com.coccionapi.factorcc.adapters.output.ports.FoodYieldPort;
+import br.com.coccionapi.factorcc.adapters.output.ports.PasswordEncoderPort;
+import br.com.coccionapi.factorcc.adapters.output.ports.UserPort;
+import br.com.coccionapi.factorcc.application.usecase.CalculatorUseCase;
+import br.com.coccionapi.factorcc.application.usecase.RegisterUserUseCase;
+import br.com.coccionapi.factorcc.domain.service.calculator.CalculatorService;
 import br.com.coccionapi.factorcc.domain.service.calculator.strategy.CalculatorStrategy;
 import br.com.coccionapi.factorcc.domain.service.calculator.strategy.CookedCalculatorStrategy;
 import br.com.coccionapi.factorcc.domain.service.calculator.strategy.GrossCalculatorStrategy;
 import br.com.coccionapi.factorcc.domain.service.calculator.strategy.NetCalculatorStrategy;
-import br.com.coccionapi.factorcc.port.input.CalculatorUseCase;
-import br.com.coccionapi.factorcc.port.output.FoodYieldPort;
+import br.com.coccionapi.factorcc.domain.service.user.UserService;
+import br.com.coccionapi.factorcc.shared.utils.JwtUtils;
 
 @Configuration
 public class BeanConfig {
@@ -35,12 +41,25 @@ public class BeanConfig {
     }
 
     @Bean
-    public FoodYieldPort foodYieldPort(FoodYieldJpaRepository foodYieldJpaRepository, CalculatorMapper calculatorMapper) {
-        return new FoodYieldAdapter(calculatorMapper, foodYieldJpaRepository);
+    public FoodYieldPort foodYieldPort(FoodYieldJpaRepository foodYieldJpaRepository,
+            CalculatorMapper calculatorMapper) {
+        return new FoodYieldPersistence(calculatorMapper, foodYieldJpaRepository);
     }
 
     @Bean
     public CalculatorUseCase calculatorUseCase(FoodYieldPort foodYieldPort, List<CalculatorStrategy> strategies) {
-        return new CalculatorUseCaseImp(foodYieldPort, strategies);
+        return new CalculatorService(foodYieldPort, strategies);
+    }
+
+    @Bean
+    public RegisterUserUseCase registerUserUseCase(PasswordEncoderPort passwordEncoderPort,
+            UserPort userPort,
+            JwtUtils jwtUtils) {
+        return new UserService(passwordEncoderPort, userPort, jwtUtils);
+    }
+
+    @Bean
+    public JwtUtils jwtUtils(@Value("${jwt.secret}") String secret) {
+        return new JwtUtils(secret);
     }
 }

@@ -1,4 +1,4 @@
-package br.com.coccionapi.factorcc.port.input;
+package br.com.coccionapi.factorcc.application.usecase;
 
 import br.com.coccionapi.factorcc.domain.command.CalculatorCommand;
 import br.com.coccionapi.factorcc.domain.model.CalculatorVO;
