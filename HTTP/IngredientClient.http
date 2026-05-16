@@ -1,8 +1,19 @@
-POST http://localhost:8081/v1/calculadora HTTP/1.1
+POST http://localhost:8080/v1/calculadora HTTP/1.1
 Content-Type: {{contentType}}
 
 {
 "foodName": "Cenoura",
 "foodWeight": 900.00,
-"typeWeight": "COOKEDD"
+"typeWeight": "COOKED"
+}
+
+###
+
+POST http://localhost:8080/v1/auth/register
+Content-Type: application/json
+
+{
+  "name": "Luisa Sonsa",
+  "email": "luisasonsa@email.com",
+  "password": "senhasegura123"
 }
