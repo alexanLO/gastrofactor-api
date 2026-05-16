@@ -1,4 +1,4 @@
-package br.com.coccionapi.factorcc.port.output;
+package br.com.coccionapi.factorcc.adapters.output.ports;
 
 import java.util.Optional;
 

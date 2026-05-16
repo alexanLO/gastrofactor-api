@@ -1,23 +1,23 @@
-package br.com.coccionapi.factorcc.application.usecase.calculator;
+package br.com.coccionapi.factorcc.domain.service.calculator;
 
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 
+import br.com.coccionapi.factorcc.adapters.output.ports.FoodYieldPort;
+import br.com.coccionapi.factorcc.application.usecase.CalculatorUseCase;
 import br.com.coccionapi.factorcc.domain.command.CalculatorCommand;
 import br.com.coccionapi.factorcc.domain.model.CalculatorVO;
 import br.com.coccionapi.factorcc.domain.model.FoodYieldVO;
 import br.com.coccionapi.factorcc.domain.service.calculator.strategy.CalculatorStrategy;
 import br.com.coccionapi.factorcc.infrastructure.exceptions.BusinessException;
 import br.com.coccionapi.factorcc.infrastructure.exceptions.NotFoundException;
-import br.com.coccionapi.factorcc.port.input.CalculatorUseCase;
-import br.com.coccionapi.factorcc.port.output.FoodYieldPort;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-public class CalculatorUseCaseImp implements CalculatorUseCase {
+public class CalculatorService implements CalculatorUseCase {
 
     private final FoodYieldPort foodYieldPort;
     private final List<CalculatorStrategy> caculatorStrategy;
