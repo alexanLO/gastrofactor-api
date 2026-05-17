@@ -7,12 +7,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.coccionapi.factorcc.adapters.input.api.auth.dto.request.LogoutRequest;
 import br.com.coccionapi.factorcc.adapters.input.api.auth.dto.request.RefreshRequest;
 import br.com.coccionapi.factorcc.adapters.input.api.auth.dto.request.UserLoginRequest;
 import br.com.coccionapi.factorcc.adapters.input.api.auth.dto.request.UserRegisterRequest;
 import br.com.coccionapi.factorcc.adapters.input.api.auth.dto.response.AuthResponse;
 import br.com.coccionapi.factorcc.adapters.mappers.AuthMapper;
 import br.com.coccionapi.factorcc.application.usecase.LoginUserUseCase;
+import br.com.coccionapi.factorcc.application.usecase.LogoutUseCase;
 import br.com.coccionapi.factorcc.application.usecase.RefreshTokenUseCase;
 import br.com.coccionapi.factorcc.application.usecase.RegisterUserUseCase;
 import jakarta.validation.Valid;
@@ -29,6 +31,7 @@ public class AuthController implements AuthSwagger {
     private final LoginUserUseCase loginUserUseCase;
     private final RefreshTokenUseCase refreshTokenUseCase;
     private final RegisterUserUseCase registerUserUseCase;
+    private final LogoutUseCase logoutUseCase;
 
     @Override
     @PostMapping("/register")
@@ -63,6 +66,17 @@ public class AuthController implements AuthSwagger {
 
         log.info("Token atualizado com sucesso");
         return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @Override
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(LogoutRequest request) {
+        log.info("Chamando requisição para logout.");
+
+        logoutUseCase.logout(request.refreshToken());
+
+        log.info("Logout realizado com sucesso");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

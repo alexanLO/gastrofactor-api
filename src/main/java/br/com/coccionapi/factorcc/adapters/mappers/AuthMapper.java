@@ -17,6 +17,8 @@ import br.com.coccionapi.factorcc.domain.model.AuthVO;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface AuthMapper {
 
+
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "role", ignore = true)
     @Mapping(target = "provider", ignore = true)
     UserCommand toRegisterRequest(UserRegisterRequest request);
@@ -26,11 +28,11 @@ public interface AuthMapper {
     @Mapping(target = "id", ignore = true)
     UserEntity toEntity(UserCommand command);
 
-    UserCommand toCommand(UserEntity entity);
+   
 
     UserLoginCommand toLoginRequest(UserLoginRequest request);
 
-    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "id", source = "id")
     @Mapping(target = "user.name", source = "user.name")
     @Mapping(target = "user.email", source = "user.email")
     @Mapping(target = "user.password", source = "user.password")

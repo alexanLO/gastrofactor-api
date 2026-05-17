@@ -5,10 +5,11 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 
+import br.com.coccionapi.factorcc.adapters.output.ports.AuthPort;
 import br.com.coccionapi.factorcc.adapters.output.ports.PasswordEncoderPort;
-import br.com.coccionapi.factorcc.adapters.output.ports.RefreshTokenPort;
 import br.com.coccionapi.factorcc.adapters.output.ports.UserPort;
 import br.com.coccionapi.factorcc.application.usecase.LoginUserUseCase;
+import br.com.coccionapi.factorcc.application.usecase.LogoutUseCase;
 import br.com.coccionapi.factorcc.application.usecase.RefreshTokenUseCase;
 import br.com.coccionapi.factorcc.application.usecase.RegisterUserUseCase;
 import br.com.coccionapi.factorcc.domain.command.RefreshTokenCommand;
@@ -23,11 +24,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-public class AuthService implements RegisterUserUseCase, LoginUserUseCase, RefreshTokenUseCase {
+public class AuthService implements RegisterUserUseCase, LoginUserUseCase, RefreshTokenUseCase, LogoutUseCase {
 
-    private final UserPort userPort;
+    private final AuthPort authPort;
     private final JwtUtils jwtUtils;
-    private final RefreshTokenPort refreshTokenPort;
+    private final UserPort userPort;
     private final PasswordEncoderPort passwordEncoderPort;
 
     @Override
@@ -45,7 +46,7 @@ public class AuthService implements RegisterUserUseCase, LoginUserUseCase, Refre
         command.setProvider(ProvidersEnum.LOCAL);
         command.setRole("USER");
 
-        userPort.register(command);
+        authPort.registerUser(command);
 
         return new AuthVO(jwtUtils.generateToken(command), null);
     }
@@ -86,21 +87,36 @@ public class AuthService implements RegisterUserUseCase, LoginUserUseCase, Refre
         return new AuthVO(newAccessToken, newRefresh.getToken().toString());
     }
 
+    @Override
+    public void logout(String token) {
+
+        RefreshTokenCommand refreshToken = authPort.findByRefreshToken(token)
+                .orElseThrow(() -> new BusinessException(HttpStatus.UNAUTHORIZED.value(), "Refresh token inválido"));
+
+        refreshToken.setRevoked(true);
+
+        authPort.saveRefreshToken(refreshToken);
+
+        log.info("Logout realizado com sucesso");
+    }
+
     // Metodos Auxiliares -------------
 
-    public RefreshTokenCommand createRefreshToken(UserCommand user) {
+    private RefreshTokenCommand createRefreshToken(UserCommand user) {
 
-        RefreshTokenCommand refreshToken = new RefreshTokenCommand(UUID.randomUUID().toString(),
+        RefreshTokenCommand refreshToken = new RefreshTokenCommand(
+                null,
+                UUID.randomUUID().toString(),
                 LocalDateTime.now().plusDays(7),
                 false,
                 user);
 
-        return refreshTokenPort.save(refreshToken);
+        return authPort.saveRefreshToken(refreshToken);
 
     }
 
     private RefreshTokenCommand validate(String token) {
-        RefreshTokenCommand refreshToken = refreshTokenPort.findByToken(token)
+        RefreshTokenCommand refreshToken = authPort.findByRefreshToken(token)
                 .orElseThrow(() -> new BusinessException(HttpStatus.UNAUTHORIZED.value(), "Refresh token inválido"));
 
         if (refreshToken.isRevoked()) {
@@ -114,8 +130,9 @@ public class AuthService implements RegisterUserUseCase, LoginUserUseCase, Refre
         return refreshToken;
     }
 
-    public void revoke(RefreshTokenCommand token) {
+    private void revoke(RefreshTokenCommand token) {
         token.setRevoked(true);
-        refreshTokenPort.save(token);
+        authPort.saveRefreshToken(token);
     }
+
 }

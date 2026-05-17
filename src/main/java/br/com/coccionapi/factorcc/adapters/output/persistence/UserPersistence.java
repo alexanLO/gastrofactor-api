@@ -4,24 +4,20 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import br.com.coccionapi.factorcc.adapters.mappers.AuthMapper;
+import br.com.coccionapi.factorcc.adapters.mappers.UserMapper;
 import br.com.coccionapi.factorcc.adapters.output.persistence.repository.UserRepository;
 import br.com.coccionapi.factorcc.adapters.output.ports.UserPort;
 import br.com.coccionapi.factorcc.domain.command.UserCommand;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
-public class UserPersister implements UserPort {
+public class UserPersistence implements UserPort {
 
-    private final AuthMapper userMapper;
     private final UserRepository userRepository;
-
-    @Override
-    public void register(UserCommand command) {
-
-        userRepository.save(userMapper.toEntity(command));
-    }
+    private final UserMapper userMapper;
 
     @Override
     public Optional<UserCommand> findUserByEmail(String email) {

@@ -9,12 +9,13 @@ import org.springframework.context.annotation.Configuration;
 import br.com.coccionapi.factorcc.adapters.mappers.CalculatorMapper;
 import br.com.coccionapi.factorcc.adapters.output.persistence.FoodYieldPersistence;
 import br.com.coccionapi.factorcc.adapters.output.persistence.repository.FoodYieldJpaRepository;
+import br.com.coccionapi.factorcc.adapters.output.ports.AuthPort;
 import br.com.coccionapi.factorcc.adapters.output.ports.FoodYieldPort;
 import br.com.coccionapi.factorcc.adapters.output.ports.PasswordEncoderPort;
-import br.com.coccionapi.factorcc.adapters.output.ports.RefreshTokenPort;
 import br.com.coccionapi.factorcc.adapters.output.ports.UserPort;
 import br.com.coccionapi.factorcc.application.usecase.CalculatorUseCase;
 import br.com.coccionapi.factorcc.application.usecase.LoginUserUseCase;
+import br.com.coccionapi.factorcc.application.usecase.LogoutUseCase;
 import br.com.coccionapi.factorcc.application.usecase.RegisterUserUseCase;
 import br.com.coccionapi.factorcc.domain.service.auth.AuthService;
 import br.com.coccionapi.factorcc.domain.service.calculator.CalculatorService;
@@ -55,16 +56,26 @@ public class BeanConfig {
 
     @Bean
     public RegisterUserUseCase registerUserUseCase(PasswordEncoderPort passwordEncoderPort,
+            AuthPort authPort,
             UserPort userPort,
-            JwtUtils jwtUtils, RefreshTokenPort refreshTokenPort) {
-        return new AuthService(userPort, jwtUtils, refreshTokenPort, passwordEncoderPort);
+            JwtUtils jwtUtils) {
+        return new AuthService(authPort, jwtUtils, userPort, passwordEncoderPort);
     }
 
     @Bean
     public LoginUserUseCase loginUserUseCase(PasswordEncoderPort passwordEncoderPort,
+            AuthPort authPort,
             UserPort userPort,
-            JwtUtils jwtUtils, RefreshTokenPort refreshTokenPort) {
-        return new AuthService(userPort, jwtUtils, refreshTokenPort, passwordEncoderPort);
+            JwtUtils jwtUtils) {
+        return new AuthService(authPort, jwtUtils, userPort, passwordEncoderPort);
+    }
+
+    @Bean
+    public LogoutUseCase logoutUseCase(PasswordEncoderPort passwordEncoderPort,
+            AuthPort authPort,
+            UserPort userPort,
+            JwtUtils jwtUtils) {
+        return new AuthService(authPort, jwtUtils, userPort, passwordEncoderPort);
     }
 
     @Bean

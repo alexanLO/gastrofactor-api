@@ -6,8 +6,5 @@ import br.com.coccionapi.factorcc.domain.command.UserCommand;
 
 public interface UserPort {
 
-    void register(UserCommand command);
-
     Optional<UserCommand> findUserByEmail(String email);
-
 }

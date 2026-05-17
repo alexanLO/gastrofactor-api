@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import br.com.coccionapi.factorcc.adapters.input.api.auth.dto.request.LogoutRequest;
 import br.com.coccionapi.factorcc.adapters.input.api.auth.dto.request.RefreshRequest;
 import br.com.coccionapi.factorcc.adapters.input.api.auth.dto.request.UserLoginRequest;
 import br.com.coccionapi.factorcc.adapters.input.api.auth.dto.request.UserRegisterRequest;
@@ -49,4 +50,14 @@ public interface AuthSwagger {
                         @ApiResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
         })
         public ResponseEntity<AuthResponse> refresh(@RequestBody RefreshRequest request);
+
+                @Operation(summary = "", description = "", method = "POST")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "204", description = "Logout realizado com sucesso", content = @Content(schema = @Schema(implementation = CalculatorResponse.class))),
+                        @ApiResponse(responseCode = "400", description = "Requisição inválida ou tipo de peso não suportado", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+                        @ApiResponse(responseCode = "401", description = "Não autorizado", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+                        @ApiResponse(responseCode = "404", description = "Recurso não encontrado", content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+                        @ApiResponse(responseCode = "500", description = "Erro interno do servidor", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+        })
+        public ResponseEntity<Void> logout(@RequestBody LogoutRequest request);
 }
