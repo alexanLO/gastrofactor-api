@@ -1,5 +1,6 @@
 package br.com.coccionapi.factorcc.infrastructure.config;
 
+import br.com.coccionapi.factorcc.infrastructure.security.RateLimitFilter;
 import java.util.List;
 
 import org.springframework.context.annotation.Bean;
@@ -23,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+        private final RateLimitFilter rateLimitFilter;
         private final JwtAuthenticationFilter jwtFilter;
 
         @Bean
@@ -60,7 +62,8 @@ public class SecurityConfig {
                                                 .anyRequest().authenticated())
                                 .addFilterBefore(
                                                 jwtFilter,
-                                                UsernamePasswordAuthenticationFilter.class);
+                                                UsernamePasswordAuthenticationFilter.class)
+                                .addFilterBefore(rateLimitFilter, JwtAuthenticationFilter.class);
 
                 return http.build();
         }

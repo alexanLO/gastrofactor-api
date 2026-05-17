@@ -34,7 +34,8 @@ POST http://localhost:8080/v1/auth/logout
 Content-Type: application/json
 
 {
-  "refreshToken": "9987d7c4-feda-4650-843b-d6d14d6db50f"
+  "accessToken": "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJsdWlzYXNvbnNhQGVtYWlsLmNvbSIsInJvbGUiOiJVU0VSIiwicHJvdmlkZXIiOiJMT0NBTCIsImlhdCI6MTc3ODk5MTg1NywiZXhwIjoxNzc4OTkyNzU3fQ.idDPWZwGFeU_8_bLY6lToh3qOxpYbo-kJYEHOMTyr1hUKOe-0xt2lGMWYzxEf8FG",
+  "refreshToken": "4ba643af-6814-4168-a671-e866b427069b"
 }
 
 ###

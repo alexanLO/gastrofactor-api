@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import br.com.coccionapi.factorcc.domain.command.UserCommand;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -19,69 +20,76 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JwtUtils {
 
-    private final SecretKey key;
-    private final Integer timeToken = 1000 * 60 * 15;
+        private final SecretKey key;
+        private final Integer timeToken = 1000 * 60 * 15;
 
-    public JwtUtils(
-            @Value("${jwt.secret}") String secret) {
-        this.key = Keys.hmacShaKeyFor(secret.getBytes());
-    }
+        public JwtUtils(
+                        @Value("${jwt.secret}") String secret) {
+                this.key = Keys.hmacShaKeyFor(secret.getBytes());
+        }
 
-    public String generateToken(UserCommand user) {
+        public String generateToken(UserCommand user) {
 
-        return Jwts.builder()
-                .subject(user.getEmail())
-                .claim("role", user.getRole())
-                .claim("provider", user.getProvider())
-                .issuedAt(new Date())
-                .expiration(
-                        new Date(System.currentTimeMillis() + timeToken))
-                .signWith(key)
-                .compact();
-    }
+                return Jwts.builder()
+                                .subject(user.getEmail())
+                                .claim("role", user.getRole())
+                                .claim("provider", user.getProvider())
+                                .issuedAt(new Date())
+                                .expiration(
+                                                new Date(System.currentTimeMillis() + timeToken))
+                                .signWith(key)
+                                .compact();
+        }
 
-    public String extractEmail(String token) {
+        public String extractEmail(String token) {
 
-        return Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getSubject();
-    }
+                return Jwts.parser()
+                                .verifyWith(key)
+                                .build()
+                                .parseSignedClaims(token)
+                                .getPayload()
+                                .getSubject();
+        }
 
-    public boolean isTokenValid(String token, String email) {
-        return extractEmail(token).equals(email)
-                && !isTokenExpired(token);
-    }
+        public boolean isTokenValid(String token, String email) {
+                return extractEmail(token).equals(email)
+                                && !isTokenExpired(token);
+        }
 
-    private boolean isTokenExpired(String token) {
+        private boolean isTokenExpired(String token) {
 
-        Date expiration = Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
-                .getExpiration();
+                Date expiration = Jwts.parser()
+                                .verifyWith(key)
+                                .build()
+                                .parseSignedClaims(token)
+                                .getPayload()
+                                .getExpiration();
 
-        return expiration.before(new Date());
-    }
+                return expiration.before(new Date());
+        }
 
-    public LocalDateTime extractExpiration(String token) {
-        Date expiration = extractAllClaims(token)
-                .getExpiration();
+        public LocalDateTime extractExpiration(String token) {
+                Date expiration = extractAllClaims(token)
+                                .getExpiration();
 
-        return expiration.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
-    }
+                return expiration.toInstant()
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDateTime();
+        }
 
-    private Claims extractAllClaims(String token) {
+        private Claims extractAllClaims(String token) {
 
-        return Jwts.parser()
-                .verifyWith(key)
-                .build()
-                .parseSignedClaims(token)
-                .getPayload();
-    }
+                try {
+
+                        return Jwts.parser()
+                                        .verifyWith(key)
+                                        .build()
+                                        .parseSignedClaims(token)
+                                        .getPayload();
+
+                } catch (ExpiredJwtException ex) {
+
+                        return ex.getClaims();
+                }
+        }
 }

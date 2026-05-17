@@ -3,6 +3,8 @@ package br.com.coccionapi.factorcc.infrastructure.security;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         private final JwtUtils jwtUtils;

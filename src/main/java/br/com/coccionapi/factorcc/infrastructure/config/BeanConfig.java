@@ -11,12 +11,10 @@ import br.com.coccionapi.factorcc.adapters.output.persistence.FoodYieldPersisten
 import br.com.coccionapi.factorcc.adapters.output.persistence.repository.FoodYieldJpaRepository;
 import br.com.coccionapi.factorcc.adapters.output.ports.AuthPort;
 import br.com.coccionapi.factorcc.adapters.output.ports.FoodYieldPort;
+import br.com.coccionapi.factorcc.adapters.output.ports.JwtBlacklistPort;
 import br.com.coccionapi.factorcc.adapters.output.ports.PasswordEncoderPort;
 import br.com.coccionapi.factorcc.adapters.output.ports.UserPort;
 import br.com.coccionapi.factorcc.application.usecase.CalculatorUseCase;
-import br.com.coccionapi.factorcc.application.usecase.LoginUserUseCase;
-import br.com.coccionapi.factorcc.application.usecase.LogoutUseCase;
-import br.com.coccionapi.factorcc.application.usecase.RegisterUserUseCase;
 import br.com.coccionapi.factorcc.domain.service.auth.AuthService;
 import br.com.coccionapi.factorcc.domain.service.calculator.CalculatorService;
 import br.com.coccionapi.factorcc.domain.service.calculator.strategy.CalculatorStrategy;
@@ -55,27 +53,12 @@ public class BeanConfig {
     }
 
     @Bean
-    public RegisterUserUseCase registerUserUseCase(PasswordEncoderPort passwordEncoderPort,
-            AuthPort authPort,
+    public AuthService authService(AuthPort authPort,
+            JwtUtils jwtUtils,
             UserPort userPort,
-            JwtUtils jwtUtils) {
-        return new AuthService(authPort, jwtUtils, userPort, passwordEncoderPort);
-    }
-
-    @Bean
-    public LoginUserUseCase loginUserUseCase(PasswordEncoderPort passwordEncoderPort,
-            AuthPort authPort,
-            UserPort userPort,
-            JwtUtils jwtUtils) {
-        return new AuthService(authPort, jwtUtils, userPort, passwordEncoderPort);
-    }
-
-    @Bean
-    public LogoutUseCase logoutUseCase(PasswordEncoderPort passwordEncoderPort,
-            AuthPort authPort,
-            UserPort userPort,
-            JwtUtils jwtUtils) {
-        return new AuthService(authPort, jwtUtils, userPort, passwordEncoderPort);
+            JwtBlacklistPort jwtBlacklistPort,
+            PasswordEncoderPort passwordEncoderPort) {
+        return new AuthService(authPort, jwtUtils, userPort, jwtBlacklistPort, passwordEncoderPort);
     }
 
     @Bean
