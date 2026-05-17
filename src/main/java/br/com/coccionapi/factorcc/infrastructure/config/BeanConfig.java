@@ -11,15 +11,17 @@ import br.com.coccionapi.factorcc.adapters.output.persistence.FoodYieldPersisten
 import br.com.coccionapi.factorcc.adapters.output.persistence.repository.FoodYieldJpaRepository;
 import br.com.coccionapi.factorcc.adapters.output.ports.FoodYieldPort;
 import br.com.coccionapi.factorcc.adapters.output.ports.PasswordEncoderPort;
+import br.com.coccionapi.factorcc.adapters.output.ports.RefreshTokenPort;
 import br.com.coccionapi.factorcc.adapters.output.ports.UserPort;
 import br.com.coccionapi.factorcc.application.usecase.CalculatorUseCase;
+import br.com.coccionapi.factorcc.application.usecase.LoginUserUseCase;
 import br.com.coccionapi.factorcc.application.usecase.RegisterUserUseCase;
+import br.com.coccionapi.factorcc.domain.service.auth.AuthService;
 import br.com.coccionapi.factorcc.domain.service.calculator.CalculatorService;
 import br.com.coccionapi.factorcc.domain.service.calculator.strategy.CalculatorStrategy;
 import br.com.coccionapi.factorcc.domain.service.calculator.strategy.CookedCalculatorStrategy;
 import br.com.coccionapi.factorcc.domain.service.calculator.strategy.GrossCalculatorStrategy;
 import br.com.coccionapi.factorcc.domain.service.calculator.strategy.NetCalculatorStrategy;
-import br.com.coccionapi.factorcc.domain.service.user.UserService;
 import br.com.coccionapi.factorcc.shared.utils.JwtUtils;
 
 @Configuration
@@ -54,8 +56,15 @@ public class BeanConfig {
     @Bean
     public RegisterUserUseCase registerUserUseCase(PasswordEncoderPort passwordEncoderPort,
             UserPort userPort,
-            JwtUtils jwtUtils) {
-        return new UserService(passwordEncoderPort, userPort, jwtUtils);
+            JwtUtils jwtUtils, RefreshTokenPort refreshTokenPort) {
+        return new AuthService(userPort, jwtUtils, refreshTokenPort, passwordEncoderPort);
+    }
+
+    @Bean
+    public LoginUserUseCase loginUserUseCase(PasswordEncoderPort passwordEncoderPort,
+            UserPort userPort,
+            JwtUtils jwtUtils, RefreshTokenPort refreshTokenPort) {
+        return new AuthService(userPort, jwtUtils, refreshTokenPort, passwordEncoderPort);
     }
 
     @Bean

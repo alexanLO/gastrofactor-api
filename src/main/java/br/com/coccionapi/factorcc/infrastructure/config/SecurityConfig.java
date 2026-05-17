@@ -55,7 +55,7 @@ public class SecurityConfig {
                                                 SessionCreationPolicy.STATELESS))
                                 .authorizeHttpRequests(auth -> auth
                                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                                .requestMatchers(HttpMethod.POST, "/v1/auth/register").permitAll()
+                                                .requestMatchers("/v1/auth/**").permitAll()
                                                 .requestMatchers("/v1/calculadora/**").permitAll()
                                                 .anyRequest().authenticated())
                                 .addFilterBefore(
@@ -64,9 +64,4 @@ public class SecurityConfig {
 
                 return http.build();
         }
-
-        // TODO @Bean
-        // public PasswordEncoder passwordEncoder() {
-        // return new BCryptPasswordEncoder(12);
-        // }
 }

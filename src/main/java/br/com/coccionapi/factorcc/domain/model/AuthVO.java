@@ -1,4 +1,4 @@
 package br.com.coccionapi.factorcc.domain.model;
 
-public record AuthVO(String token) {
+public record AuthVO(String accessToken, String refreshToken) {
 } 

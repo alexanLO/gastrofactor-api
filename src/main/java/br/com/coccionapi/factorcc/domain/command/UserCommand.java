@@ -14,6 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UserCommand {
 
+    private String id;
     private String name;
     private String email;
     private String password;

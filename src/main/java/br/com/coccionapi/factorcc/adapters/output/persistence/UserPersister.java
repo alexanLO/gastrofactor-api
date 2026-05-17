@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import br.com.coccionapi.factorcc.adapters.mappers.UserMapper;
+import br.com.coccionapi.factorcc.adapters.mappers.AuthMapper;
 import br.com.coccionapi.factorcc.adapters.output.persistence.repository.UserRepository;
 import br.com.coccionapi.factorcc.adapters.output.ports.UserPort;
 import br.com.coccionapi.factorcc.domain.command.UserCommand;
@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserPersister implements UserPort {
 
-    private final UserMapper userMapper;
+    private final AuthMapper userMapper;
     private final UserRepository userRepository;
 
     @Override

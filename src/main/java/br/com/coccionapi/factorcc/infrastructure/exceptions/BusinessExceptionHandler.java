@@ -34,7 +34,6 @@ public class BusinessExceptionHandler {
         return buildResponseEntity(apiErro, ex);
     }
 
-    @SuppressWarnings("null") //TODO verificar caso
     private ResponseEntity<Object> buildResponseEntity(ApiErrorResponse apiError, Exception ex) {
         log.error("Excecao sendo capturada, APIErrorCode: {}, Menssagem: {}, Excecao ", apiError.getCodeError(),
                 apiError.getMessage(), ex);

@@ -15,5 +15,15 @@ Content-Type: application/json
 {
   "name": "Luisa Sonsa",
   "email": "luisasonsa@email.com",
-  "password": "senhasegura123"
+  "password": "Senhasegur@123"
+}
+
+###
+
+POST http://localhost:8080/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "luisasonsa@email.com",
+  "password": "Senhasegur@123"
 }

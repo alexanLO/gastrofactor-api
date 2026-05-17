@@ -7,9 +7,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.coccionapi.factorcc.adapters.input.api.auth.dto.AuthResponse;
-import br.com.coccionapi.factorcc.adapters.input.api.auth.dto.UserRegisterRequest;
-import br.com.coccionapi.factorcc.adapters.mappers.UserMapper;
+import br.com.coccionapi.factorcc.adapters.input.api.auth.dto.request.RefreshRequest;
+import br.com.coccionapi.factorcc.adapters.input.api.auth.dto.request.UserLoginRequest;
+import br.com.coccionapi.factorcc.adapters.input.api.auth.dto.request.UserRegisterRequest;
+import br.com.coccionapi.factorcc.adapters.input.api.auth.dto.response.AuthResponse;
+import br.com.coccionapi.factorcc.adapters.mappers.AuthMapper;
+import br.com.coccionapi.factorcc.application.usecase.LoginUserUseCase;
+import br.com.coccionapi.factorcc.application.usecase.RefreshTokenUseCase;
 import br.com.coccionapi.factorcc.application.usecase.RegisterUserUseCase;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +25,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/v1/auth")
 public class AuthController implements AuthSwagger {
 
+    private final AuthMapper authMapper;
+    private final LoginUserUseCase loginUserUseCase;
+    private final RefreshTokenUseCase refreshTokenUseCase;
     private final RegisterUserUseCase registerUserUseCase;
-    private final UserMapper authMapper;
 
     @Override
     @PostMapping("/register")
@@ -31,10 +37,32 @@ public class AuthController implements AuthSwagger {
                 request.getEmail());
 
         AuthResponse response = authMapper
-                .toResponse(registerUserUseCase.register(authMapper.toRequest(request)));
+                .toResponse(registerUserUseCase.register(authMapper.toRegisterRequest(request)));
 
         log.info("Usuário cadastrado com sucesso.");
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @Override
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody UserLoginRequest request) {
+        log.info("Chamando requisição para logar usuario com email: {}", request.getEmail());
+
+        AuthResponse response = authMapper.toResponse(loginUserUseCase.login(authMapper.toLoginRequest(request)));
+
+        log.info("Usuário logado com sucesso.");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @Override
+    @PostMapping("/refresh")
+    public ResponseEntity<AuthResponse> refresh(RefreshRequest request) {
+        log.info("Chamando requisição para atualizar o token");
+
+        AuthResponse response = authMapper.toResponse(refreshTokenUseCase.refresh(request.getRefreshToken()));
+
+        log.info("Token atualizado com sucesso");
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }
