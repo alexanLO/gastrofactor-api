@@ -78,11 +78,11 @@ public class AuthService implements RegisterUserUseCase, LoginUserUseCase, Refre
 
         UserCommand userCommand = refreshTokenCommand.getUser();
 
-        this.revoke(refreshTokenCommand);
-
         String newAccessToken = jwtUtils.generateToken(userCommand);
 
         RefreshTokenCommand newRefresh = this.createRefreshToken(userCommand);
+
+        this.revoke(refreshTokenCommand, newRefresh.getToken());
 
         return new AuthVO(newAccessToken, newRefresh.getToken().toString());
     }
@@ -104,15 +104,14 @@ public class AuthService implements RegisterUserUseCase, LoginUserUseCase, Refre
 
     private RefreshTokenCommand createRefreshToken(UserCommand user) {
 
-        RefreshTokenCommand refreshToken = new RefreshTokenCommand(
-                null,
-                UUID.randomUUID().toString(),
-                LocalDateTime.now().plusDays(7),
-                false,
-                user);
+        RefreshTokenCommand refreshToken = RefreshTokenCommand.builder()
+                .token(UUID.randomUUID().toString())
+                .expiresAt(LocalDateTime.now().plusDays(7))
+                .revoked(false)
+                .user(user)
+                .build();
 
         return authPort.saveRefreshToken(refreshToken);
-
     }
 
     private RefreshTokenCommand validate(String token) {
@@ -120,7 +119,15 @@ public class AuthService implements RegisterUserUseCase, LoginUserUseCase, Refre
                 .orElseThrow(() -> new BusinessException(HttpStatus.UNAUTHORIZED.value(), "Refresh token inválido"));
 
         if (refreshToken.isRevoked()) {
-            throw new BusinessException(HttpStatus.UNAUTHORIZED.value(), "Refresh token revogado");
+            if (refreshToken.getReplacedByToken().isBlank()) {
+                log.warn("Tentativa de reutilização de refresh token");
+
+                throw new BusinessException(HttpStatus.UNAUTHORIZED.value(), "Refresh token revogado");
+            }
+
+            throw new BusinessException(
+                    HttpStatus.UNAUTHORIZED.value(),
+                    "Refresh token revogado");
         }
 
         if (refreshToken.getExpiresAt().isBefore(LocalDateTime.now())) {
@@ -130,9 +137,11 @@ public class AuthService implements RegisterUserUseCase, LoginUserUseCase, Refre
         return refreshToken;
     }
 
-    private void revoke(RefreshTokenCommand token) {
-        token.setRevoked(true);
-        authPort.saveRefreshToken(token);
+    private void revoke(RefreshTokenCommand refreshToken, String replacedByToken) {
+        refreshToken.setRevoked(true);
+        refreshToken.setReplacedByToken(replacedByToken);
+
+        authPort.saveRefreshToken(refreshToken);
     }
 
 }

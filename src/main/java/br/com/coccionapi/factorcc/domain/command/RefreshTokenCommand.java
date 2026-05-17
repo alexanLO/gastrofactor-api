@@ -21,4 +21,5 @@ public class RefreshTokenCommand {
    private LocalDateTime expiresAt;
    private boolean revoked;
    private UserCommand user;
+   private String replacedByToken;
 }
