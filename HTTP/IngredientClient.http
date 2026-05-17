@@ -27,3 +27,22 @@ Content-Type: application/json
   "email": "luisasonsa@email.com",
   "password": "Senhasegur@123"
 }
+
+###
+
+POST http://localhost:8080/v1/auth/logout
+Content-Type: application/json
+
+{
+  "refreshToken": "ab453cf9-e6a9-42ec-9e2a-db045057cbea"
+}
+
+###
+
+POST http://localhost:8080/v1/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "ab453cf9-e6a9-42ec-9e2a-db045057cbea"
+}
+
