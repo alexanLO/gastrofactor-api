@@ -10,6 +10,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import br.com.coccionapi.factorcc.adapters.output.ports.JwtBlacklistPort;
 import br.com.coccionapi.factorcc.adapters.output.ports.UserPort;
 import br.com.coccionapi.factorcc.shared.utils.JwtUtils;
 import jakarta.servlet.FilterChain;
@@ -26,6 +27,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         private final JwtUtils jwtUtils;
         private final UserPort userPort;
+        private final JwtBlacklistPort jwtBlacklistPort;
 
         @Override
         protected void doFilterInternal(
@@ -35,6 +37,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 String path = request.getServletPath();
 
+                // libera endpoints auth
                 if (path.startsWith("/v1/auth")) {
                         filterChain.doFilter(request, response);
                         return;
@@ -42,16 +45,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 final String authHeader = request.getHeader("Authorization");
 
-                if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                // sem token
+                if (authHeader.isBlank() || !authHeader.startsWith("Bearer ")) {
                         filterChain.doFilter(request, response);
                         return;
                 }
 
                 String token = authHeader.substring(7);
 
+                // extraiToken
                 String email = jwtUtils.extractEmail(token);
 
-                if (email != null &&
+                // verifica blacklist
+                if (jwtBlacklistPort.isBlacklisted(token)) {
+
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+                        response.getWriter().write("Token invalidado");
+
+                        return;
+                }
+
+                if (!email.isBlank() &&
                                 SecurityContextHolder.getContext().getAuthentication() == null) {
 
                         var user = userPort.findUserByEmail(email)

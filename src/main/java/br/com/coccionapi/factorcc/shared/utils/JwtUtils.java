@@ -1,5 +1,7 @@
 package br.com.coccionapi.factorcc.shared.utils;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
@@ -8,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import br.com.coccionapi.factorcc.domain.command.UserCommand;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
@@ -62,5 +65,23 @@ public class JwtUtils {
                 .getExpiration();
 
         return expiration.before(new Date());
+    }
+
+    public LocalDateTime extractExpiration(String token) {
+        Date expiration = extractAllClaims(token)
+                .getExpiration();
+
+        return expiration.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+    }
+
+    private Claims extractAllClaims(String token) {
+
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }

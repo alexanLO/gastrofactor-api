@@ -6,6 +6,7 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 
 import br.com.coccionapi.factorcc.adapters.output.ports.AuthPort;
+import br.com.coccionapi.factorcc.adapters.output.ports.JwtBlacklistPort;
 import br.com.coccionapi.factorcc.adapters.output.ports.PasswordEncoderPort;
 import br.com.coccionapi.factorcc.adapters.output.ports.UserPort;
 import br.com.coccionapi.factorcc.application.usecase.LoginUserUseCase;
@@ -29,6 +30,7 @@ public class AuthService implements RegisterUserUseCase, LoginUserUseCase, Refre
     private final AuthPort authPort;
     private final JwtUtils jwtUtils;
     private final UserPort userPort;
+    private final JwtBlacklistPort jwtBlacklistPort;
     private final PasswordEncoderPort passwordEncoderPort;
 
     @Override
@@ -88,14 +90,18 @@ public class AuthService implements RegisterUserUseCase, LoginUserUseCase, Refre
     }
 
     @Override
-    public void logout(String token) {
+    public void logout(String accessToken, String refreshToken) {
 
-        RefreshTokenCommand refreshToken = authPort.findByRefreshToken(token)
+        RefreshTokenCommand refreshTokenResponse = authPort.findByRefreshToken(refreshToken)
                 .orElseThrow(() -> new BusinessException(HttpStatus.UNAUTHORIZED.value(), "Refresh token inválido"));
 
-        refreshToken.setRevoked(true);
+        refreshTokenResponse.setRevoked(true);
 
-        authPort.saveRefreshToken(refreshToken);
+        authPort.saveRefreshToken(refreshTokenResponse);
+
+        LocalDateTime expiration = jwtUtils.extractExpiration(accessToken);
+
+        jwtBlacklistPort.blacklist(refreshToken, expiration);
 
         log.info("Logout realizado com sucesso");
     }

@@ -73,7 +73,7 @@ public class AuthController implements AuthSwagger {
     public ResponseEntity<Void> logout(LogoutRequest request) {
         log.info("Chamando requisição para logout.");
 
-        logoutUseCase.logout(request.refreshToken());
+        logoutUseCase.logout(request.accessToken(), request.refreshToken());
 
         log.info("Logout realizado com sucesso");
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
